@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- White background rounded square -->
+  <rect width="64" height="64" rx="12" fill="#FFFFFF"/>
+  <!-- Large cyan drop (main) -->
+  <path d="M34 7C34 7 22 19 22 28C22 37 27.5 43 34 43C40.5 43 46 37 46 28C46 19 34 7 34 7Z"
+    fill="url(#fav_a)"/>
+  <!-- Smaller drop lower-left -->
+  <path d="M19 30C19 30 12 37 12 42C12 46.4 15.1 49 19 49C22.9 49 26 46.4 26 42C26 37 19 30 19 30Z"
+    fill="url(#fav_b)" opacity="0.75"/>
+  <!-- Tiny drop -->
+  <path d="M27 42C27 42 23 46 23 49C23 51.8 24.8 53.5 27 53.5C29.2 53.5 31 51.8 31 49C31 46 27 42 27 42Z"
+    fill="url(#fav_c)" opacity="0.6"/>
+  <!-- Gleam on main drop -->
+  <ellipse cx="30" cy="27" rx="3.5" ry="6" fill="rgba(255,255,255,0.35)" transform="rotate(-20,30,27)"/>
+  <defs>
+    <linearGradient id="fav_a" x1="34" y1="7" x2="34" y2="43" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#3FCEED"/><stop offset="1" stopColor="#1A72B8" stopOpacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="fav_b" x1="19" y1="30" x2="19" y2="49" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#00C2E0"/><stop offset="1" stopColor="#1A72B8" stopOpacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="fav_c" x1="27" y1="42" x2="27" y2="53.5" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#00C2E0"/><stop offset="1" stopColor="#1A72B8"/>
+    </linearGradient>
+  </defs>
+</svg>

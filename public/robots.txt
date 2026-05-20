@@ -1,0 +1,12 @@
+# SLH Service Nederland — robots.txt
+# https://slhservice.nl
+
+User-agent: *
+Allow: /
+
+# Block admin from indexing
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://slhservice.nl/sitemap.xml
