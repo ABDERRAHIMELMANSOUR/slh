@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { COMPANY, CONTACT_EMAIL, LEGACY_CONTACT_EMAIL } from '../config/site'
+import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE, LEGACY_CONTACT_EMAIL, LEGACY_CONTACT_PHONE } from '../config/site'
 
 const DataContext = createContext(null)
 const STORAGE_KEY = 'slh_data'
@@ -43,14 +43,22 @@ const SAMPLE_SETTINGS = {
 
 /**
  * Settings persist in localStorage, so a returning visitor (or an admin who saved
- * settings before the rename) would otherwise keep serving the retired address.
- * Rewrite it on load; any other custom address the admin set is left untouched.
+ * settings before these values changed) would otherwise keep serving the retired
+ * address and the placeholder phone number. Rewrite both on load; any genuinely
+ * custom value the admin set is left untouched.
  */
 function migrateSettings(settings) {
   const merged = { ...SAMPLE_SETTINGS, ...settings }
+
   if (!merged.email || merged.email.trim().toLowerCase() === LEGACY_CONTACT_EMAIL) {
     merged.email = CONTACT_EMAIL
   }
+  // Compare digits-only so any spacing of the old placeholder is caught.
+  const digits = (v) => (v || '').replace(/\D/g, '')
+  if (!merged.phone || digits(merged.phone) === digits(LEGACY_CONTACT_PHONE)) {
+    merged.phone = CONTACT_PHONE
+  }
+
   return merged
 }
 

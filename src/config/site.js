@@ -17,6 +17,12 @@ export const CONTACT_EMAIL = 'info@slhservice.nl'
 /** Legacy address kept only so stored settings can be migrated away from it. */
 export const LEGACY_CONTACT_EMAIL = 'contact@slhservice.nl'
 
+/** Company phone, in display form. `tel:` hrefs strip the spaces at the point of use. */
+export const CONTACT_PHONE = '+31 6 40766802'
+
+/** Seed placeholder, kept only so stored settings can be migrated off it. */
+export const LEGACY_CONTACT_PHONE = '+31 6 00 00 00 00'
+
 /**
  * Contact form delivery endpoint.
  * FormSubmit relays the submission straight to CONTACT_EMAIL — no server component needed.
@@ -29,7 +35,7 @@ export const COMPANY = {
   name: 'SLH Service Nederland',
   legalName: 'SLH Service Nederland B.V.',
   email: CONTACT_EMAIL,
-  phone: '+31 6 00 00 00 00',
+  phone: CONTACT_PHONE,
   country: 'Netherlands',
   countryCode: 'NL',
   linkedIn: 'https://linkedin.com/company/slhservice',
