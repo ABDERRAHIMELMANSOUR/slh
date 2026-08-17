@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
@@ -11,6 +12,26 @@ import Logo from '../components/ui/Logo'
 
 const fUp = { hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}} }
 const stg  = { hidden:{}, show:{transition:{staggerChildren:.09}} }
+
+/* The founder's photo is admin-editable, so it may be empty or point at a dead URL.
+   Either way this degrades to the monogram rather than a broken image. */
+function Portrait({ src, name, alt }) {
+  const [failed, setFailed] = useState(false)
+  const initials = (name || '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'SLH'
+
+  if (src && !failed) {
+    return (
+      <img src={src} alt={alt} onError={() => setFailed(true)} loading="lazy" decoding="async"
+        className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-card-lg mb-5"/>
+    )
+  }
+  return (
+    <div className="w-36 h-36 rounded-full border-4 border-white shadow-card-lg flex items-center justify-center mb-5"
+      style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
+      <span className="text-5xl font-extrabold text-white" style={{ fontFamily:"'Sora',sans-serif" }}>{initials}</span>
+    </div>
+  )
+}
 
 export default function About() {
   const { t, lang } = useLang()
@@ -34,15 +55,13 @@ export default function About() {
                   <div className="absolute inset-0 dots-light opacity-40"/>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <Logo h={65} variant="default" className="opacity-10 mb-10 grayscale"/>
-                    {settings.ceoImage
-                      ? <img src={settings.ceoImage} alt={settings.ceoName} className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-card-lg mb-5"/>
-                      : <div className="w-36 h-36 rounded-full border-4 border-white shadow-card-lg flex items-center justify-center mb-5"
-                          style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
-                          <span className="text-5xl font-extrabold text-white" style={{ fontFamily:"'Sora',sans-serif" }}>NG</span>
-                        </div>
-                    }
+                    <Portrait
+                      src={settings.ceoImage}
+                      name={settings.ceoName}
+                      alt={t.imageAlt.portrait.replace('{name}', settings.ceoName)}
+                    />
                     <p className="font-bold text-xl text-slate-800" style={{ fontFamily:"'Sora',sans-serif" }}>{settings.ceoName}</p>
-                    <p className="text-cyan text-sm font-semibold mt-1">CEO & Founder</p>
+                    <p className="text-cyan text-sm font-semibold mt-1">{t.about.ceoRole}</p>
                   </div>
                   <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent"/>
                 </div>

@@ -54,7 +54,7 @@ export default function Footer() {
               <div className="space-y-3">
                 {[
                   { Icon:Mail,   v:settings.email,   href:`mailto:${settings.email}` },
-                  { Icon:Phone,  v:settings.phone,   href:`tel:${settings.phone}` },
+                  { Icon:Phone,  v:settings.phone,   href:`tel:${(settings.phone || '').replace(/\s/g, '')}` },
                   { Icon:MapPin, v:settings.address },
                 ].map(({ Icon, v, href }) => (
                   <div key={v} className="flex items-center gap-3">
@@ -100,23 +100,29 @@ export default function Footer() {
                 ))}
               </ul>
             </div>
-            {/* CEO */}
+            {/* Contact — company-level, no personal profile */}
             <div>
               <h4 className="text-white font-bold text-[11px] tracking-widest uppercase mb-5">{t.footer.contact}</h4>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full border-2 border-cyan/28 flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                    style={{ background:'linear-gradient(135deg,rgba(0,194,224,.22),rgba(13,58,110,.22))' }}>NG</div>
-                  <div>
-                    <div className="text-white font-semibold text-sm">{settings.ceoName}</div>
-                    <div className="text-slate-500 text-xs">CEO & Founder</div>
-                  </div>
-                </div>
+                <p className="text-slate-400 text-[13px] leading-relaxed">{t.footer.contactBlurb}</p>
+
+                {/* Call the company directly */}
+                <a href={`tel:${(settings.phone || '').replace(/\s/g, '')}`}
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-white text-[13px] font-semibold hover:-translate-y-0.5 hover:shadow-cyan transition-all"
+                  style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
+                  <Phone size={14}/>
+                  {t.footer.callNow}
+                </a>
+                <p className="text-center text-slate-500 text-xs">{settings.phone}</p>
+
                 <div className="h-px bg-white/[0.08]"/>
+
+                {/* Straight to the localized contact page */}
                 <Link to={path('contact')}
-                  className="block text-center py-2.5 rounded-xl text-cyan text-[13px] font-semibold hover:text-white transition-all"
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-cyan text-[13px] font-semibold hover:text-white transition-all"
                   style={{ background:'rgba(0,194,224,.08)', border:'1px solid rgba(0,194,224,.22)' }}>
-                  {t.contact.scheduleCall}
+                  {t.footer.contactCta}
+                  <ArrowRight size={14}/>
                 </Link>
               </div>
             </div>

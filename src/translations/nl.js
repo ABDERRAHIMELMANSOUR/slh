@@ -42,6 +42,22 @@ export default {
     },
   },
 
+  /* Alt-teksten voor fotografie. Beschrijvend in plaats van volgestopt met zoekwoorden —
+     schermlezers lezen dit voor en Google indexeert het voor afbeeldingenzoekresultaten. */
+  imageAlt: {
+    heroEngineering: 'Werktuigbouwkundig ingenieur bestudeert technische tekeningen op een industrieel installatieproject',
+    heroWelding: 'Gecertificeerde lasser verbindt RVS-procesleidingen op locatie',
+    heroHydrogen: 'Groene waterstof- en hernieuwbare energie-infrastructuur',
+    heroMissions: 'Internationale delegatie in overleg over industriële energiesamenwerking',
+    workWelding: 'TIG-lassen van een RVS-buisverbinding door een vakman van SLH Service Nederland',
+    workPipefitting: 'Pijpfitter monteert geprefabriceerde procesleiding-spools in een industriële installatie',
+    workHeatPump: 'Installatie van een zakelijk warmtepompsysteem in een utiliteitsgebouw',
+    work3d: '3D-pipingmodel en isometrieën voorbereid voor prefabricage',
+    workFoodPharma: 'Hygiënisch orbitaal gelast RVS-leidingwerk in een voedingsmiddelenfabriek',
+    workUtilities: 'Gebouwgebonden verwarmings- en koelinstallatie in een bedrijfspand',
+    portrait: 'Portret van {name}, CEO en oprichter van SLH Service Nederland',
+  },
+
   // Navigatie
   nav: {
     home: 'Home',
@@ -118,6 +134,7 @@ export default {
     p2: 'Wij fungeren als een vertrouwde brug tussen overheidsinstanties, industriële spelers, financiële instellingen en onderzoekslichamen op twee continenten.',
     ceo: 'Nouraddine Gribi',
     ceoTitle: 'CEO & Oprichter, SLH Service Nederland',
+    ceoRole: 'CEO & Oprichter',
     mission: 'Onze Missie',
     missionText: 'De mondiale energietransitie versnellen door het volledige potentieel van groen waterstof te ontsluiten via strategisch advies en internationale partnerschappen.',
     vision: 'Onze Visie',
@@ -221,6 +238,17 @@ export default {
         desc: 'Opschalen voor een shutdown, daarna weer afschalen. Onze flexibele schil van 25 ervaren lassers, pijpfitters, loodgieters en installateurs is op korte termijn inzetbaar, volledig gecertificeerd en verzekerd.',
         points: ['Gecertificeerde lassers en pijpfitters', 'Snelle inzet bij shutdowns en stops', 'Detachering voor langere periodes', 'VCA-gecertificeerd en volledig verzekerd'],
       },
+    ],
+
+    galleryTitle: 'Het Werk Zelf',
+    gallerySubtitle: 'Lassen, pijpfitten, warmtepompinstallatie en 3D-engineering — uitgevoerd door onze eigen gecertificeerde vakmensen.',
+    gallery: [
+      { title: 'Industrieel Lassen',        caption: 'Gecertificeerd TIG- en MIG/MAG-lassen met gekwalificeerde lasmethoden en NDO-rapportage.' },
+      { title: 'Pijpfitten',                caption: 'Geprefabriceerde spools en montage op locatie van proces- en utilityleidingen.' },
+      { title: 'Warmtepompinstallatie',     caption: 'Zakelijke en industriële warmtepompsystemen, ingeregeld en in bedrijf gesteld.' },
+      { title: '3D-Engineering',            caption: '3D-modellen, isometrieën en werkplaatstekeningen gecontroleerd op maakbaarheid.' },
+      { title: 'Food & Farma Leidingwerk',  caption: 'Hygiënisch orbitaal gelast RVS met volledige materiaaltraceerbaarheid.' },
+      { title: 'Gebouwgebonden Installaties', caption: 'Verwarming, koeling, water en gas voor utiliteitsgebouwen.' },
     ],
 
     specTitle: 'Technische Specialisaties',
@@ -410,12 +438,17 @@ export default {
     phoneLabel: 'Telefoon',
     scheduleCall: 'Plan een Gesprek',
     directContact: 'Direct Contact',
-    ceoNote: 'Beschikbaar voor technische projectintake, vragen over engineeringcapaciteit en strategische samenwerkingen.',
+    availabilityTitle: 'Technische intake',
+    availabilityNote: 'Stuur uw scope, tekeningen of een korte omschrijving van het probleem en een ingenieur komt bij u terug — doorgaans binnen één werkdag.',
   },
 
   // Footer
   footer: {
     tagline: 'Volledige technische ontzorging en internationaal advies in groen waterstof en de energietransitie.',
+    callUs: 'Bel ons direct',
+    callNow: 'Bel nu',
+    contactCta: 'Stuur een projectaanvraag',
+    contactBlurb: 'Spreek een ingenieur over uw project, of stuur uw scope via het contactformulier.',
     quickLinks: 'Snelle Links',
     services: 'Diensten',
     serviceList: [

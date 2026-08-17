@@ -5,6 +5,8 @@ import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
+import SmartImage from '../components/ui/SmartImage'
+import { TECHNICAL_GALLERY, resolveSrc } from '../config/images'
 import { urlFor } from '../i18n/routes'
 import { breadcrumbSchema, faqSchema, organizationSchema, serviceSchema } from '../lib/schema'
 import {
@@ -172,6 +174,41 @@ export default function TechnicalServices() {
                   <h3 className="font-bold text-slate-800 mb-2 group-hover:text-cyan transition-colors text-[15px]" style={{ fontFamily:"'Sora',sans-serif" }}>{s.title}</h3>
                   <p className="text-slate-500 text-[13.5px] leading-relaxed">{s.desc}</p>
                 </motion.article>
+              )
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Craft gallery ─────────────────────────────────────────
+          Photo slots are wired and resilient: each renders a designed industrial
+          motif until a photograph is supplied, and falls back to it if one fails. */}
+      <section className="sec" style={{ background:'linear-gradient(180deg,#fff,#F8FAFC)' }}>
+        <div className="wrap">
+          <div className="max-w-2xl mb-12">
+            <h2 className="h-lg text-slate-800 mb-4">{c.galleryTitle}</h2>
+            <p className="text-slate-500 text-lg leading-relaxed">{c.gallerySubtitle}</p>
+          </div>
+          <motion.div initial="hidden" whileInView="show" viewport={{ once:true, margin:'-50px' }} variants={stg}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {c.gallery.map((item, i) => {
+              const image = TECHNICAL_GALLERY[i % TECHNICAL_GALLERY.length]
+              return (
+                <motion.figure key={item.title} variants={fUp}
+                  className="group card overflow-hidden hover:border-cyan/20 hover:shadow-card-md">
+                  <SmartImage
+                    src={resolveSrc(image)}
+                    alt={t.imageAlt[image.altKey] || item.title}
+                    motif={image.motif}
+                    tone="light"
+                    className="h-52 w-full"
+                    imgClassName="group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <figcaption className="p-5">
+                    <h3 className="font-bold text-slate-800 mb-1.5 text-[15px] group-hover:text-cyan transition-colors" style={{ fontFamily:"'Sora',sans-serif" }}>{item.title}</h3>
+                    <p className="text-slate-500 text-[13.5px] leading-relaxed">{item.caption}</p>
+                  </figcaption>
+                </motion.figure>
               )
             })}
           </motion.div>

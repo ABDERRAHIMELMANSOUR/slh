@@ -8,7 +8,7 @@ import PageHero from '../components/ui/PageHero'
 import { CONTACT_FORM_ENDPOINT } from '../config/site'
 import { breadcrumbSchema, organizationSchema } from '../lib/schema'
 import { urlFor } from '../i18n/routes'
-import { Mail, Phone, Globe, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { Mail, Phone, Globe, CheckCircle2, AlertCircle, Loader2, Wrench } from 'lucide-react'
 
 const EMPTY = { name:'', company:'', email:'', phone:'', service:'', message:'', privacy:false }
 
@@ -97,7 +97,7 @@ export default function Contact() {
             <div className="space-y-4">
               {[
                 { Icon:Mail,  l:t.contact.emailLabel, v:settings.email,  h:`mailto:${settings.email}` },
-                { Icon:Phone, l:t.contact.phoneLabel, v:settings.phone,  h:`tel:${settings.phone}` },
+                { Icon:Phone, l:t.contact.phoneLabel, v:settings.phone,  h:`tel:${(settings.phone || '').replace(/\s/g, '')}` },
                 { Icon:Globe, l:t.contact.office,     v:settings.address },
               ].map(({ Icon, l, v, h }) => (
                 <div key={l} className="flex items-start gap-4 p-5 card hover:border-cyan/20">
@@ -108,15 +108,15 @@ export default function Contact() {
                   </div>
                 </div>
               ))}
+              {/* Company-level intake note — the founder profile lives on the About page */}
               <div className="p-5 rounded-2xl border" style={{ background:'linear-gradient(135deg,#EAF9FD,#E6EEFF)', borderColor:'rgba(0,194,224,.2)' }}>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 shadow-cyan" style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>NG</div>
-                  <div>
-                    <div className="font-bold text-slate-800 text-sm">{settings.ceoName}</div>
-                    <div className="text-slate-500 text-xs">CEO &amp; Founder</div>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white flex-shrink-0 shadow-cyan" style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
+                    <Wrench size={20}/>
                   </div>
+                  <div className="font-bold text-slate-800 text-sm">{t.contact.availabilityTitle}</div>
                 </div>
-                <p className="text-slate-500 text-xs leading-relaxed">{t.contact.ceoNote}</p>
+                <p className="text-slate-500 text-xs leading-relaxed">{t.contact.availabilityNote}</p>
               </div>
             </div>
 

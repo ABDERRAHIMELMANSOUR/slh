@@ -43,6 +43,22 @@ export default {
     },
   },
 
+  /* Alt text for photography. Descriptive rather than keyword-stuffed — it is read
+     aloud by screen readers and is what Google indexes for image search. */
+  imageAlt: {
+    heroEngineering: 'Mechanical engineer reviewing technical drawings on an industrial installation project',
+    heroWelding: 'Certified welder joining stainless steel process piping on site',
+    heroHydrogen: 'Green hydrogen and renewable energy infrastructure',
+    heroMissions: 'International delegation meeting on industrial energy cooperation',
+    workWelding: 'TIG welding of a stainless steel pipe joint by an SLH Service Nederland specialist',
+    workPipefitting: 'Pipefitter assembling prefabricated process piping spools in an industrial plant',
+    workHeatPump: 'Installation of a commercial heat pump system in a utility building',
+    work3d: '3D CAD piping model and isometric drawings prepared for fabrication',
+    workFoodPharma: 'Hygienic orbital-welded stainless steel piping in a food production facility',
+    workUtilities: 'Building-bound heating and cooling installation in a commercial property',
+    portrait: 'Portrait of {name}, CEO and founder of SLH Service Nederland',
+  },
+
   // Navigation
   nav: {
     home: 'Home',
@@ -119,6 +135,7 @@ export default {
     p2: 'We act as a trusted bridge connecting government agencies, industrial players, financial institutions, and research bodies across two continents — enabling sustainable industrial development through innovation, diplomacy, and expertise.',
     ceo: 'Nouraddine Gribi',
     ceoTitle: 'CEO & Founder, SLH Service Nederland',
+    ceoRole: 'CEO & Founder',
     mission: 'Our Mission',
     missionText: 'To accelerate the global energy transition by unlocking the full potential of green hydrogen through strategic consulting, international partnerships, and sustainable ecosystem development.',
     vision: 'Our Vision',
@@ -222,6 +239,17 @@ export default {
         desc: 'Scale up for a shutdown, scale back afterwards. Our flexible shell of 25 experienced welders, pipefitters, plumbers and installers deploys at short notice, fully certified and insured.',
         points: ['Certified welders and pipefitters', 'Short-notice deployment for shutdowns', 'Long-term secondment options', 'VCA-certified, fully insured personnel'],
       },
+    ],
+
+    galleryTitle: 'The Work Itself',
+    gallerySubtitle: 'Welding, pipefitting, heat pump installation and 3D engineering — executed by our own certified specialists.',
+    gallery: [
+      { title: 'Industrial Welding',        caption: 'Certified TIG and MIG/MAG welding with qualified procedures and NDT reporting.' },
+      { title: 'Pipefitting',               caption: 'Prefabricated spools and on-site assembly of process and utility piping.' },
+      { title: 'Heat Pump Installation',    caption: 'Commercial and industrial heat pump systems, commissioned and balanced.' },
+      { title: '3D Engineering',            caption: '3D models, isometrics and fabrication drawings checked for buildability.' },
+      { title: 'Food & Pharma Piping',      caption: 'Hygienic orbital-welded stainless steel with full material traceability.' },
+      { title: 'Building Utilities',        caption: 'Heating, cooling, water and gas installations for utility buildings.' },
     ],
 
     specTitle: 'Technical Specializations',
@@ -411,12 +439,17 @@ export default {
     phoneLabel: 'Phone',
     scheduleCall: 'Schedule a Call',
     directContact: 'Direct Contact',
-    ceoNote: 'Available for technical project intake, engineering capacity questions, and strategic partnership discussions.',
+    availabilityTitle: 'Technical intake',
+    availabilityNote: 'Send your scope, drawings or a short description of the problem and an engineer will come back to you — usually within one working day.',
   },
 
   // Footer
   footer: {
     tagline: 'Complete technical engineering services and international consulting in green hydrogen and the energy transition.',
+    callUs: 'Call us directly',
+    callNow: 'Call now',
+    contactCta: 'Send a project request',
+    contactBlurb: 'Speak to an engineer about your project, or send your scope through the contact form.',
     quickLinks: 'Quick Links',
     services: 'Services',
     serviceList: [

@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useLang } from '../../context/LangContext'
 import { useData } from '../../context/DataContext'
-import { ArrowRight, CheckCircle2, Award, Globe, Target, Eye, BarChart3, Users, Zap, Leaf, TrendingUp, Shield, Lightbulb, Wrench } from 'lucide-react'
-import Logo from '../ui/Logo'
+import { ArrowRight, CheckCircle2, Award, Globe, Target, BarChart3, Users, Zap, Leaf, TrendingUp, Wrench } from 'lucide-react'
 
 const fUp = { hidden:{opacity:0,y:26}, show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}} }
 const stg = { hidden:{}, show:{transition:{staggerChildren:.09}} }
@@ -64,101 +63,6 @@ export function StatsStrip() {
             </motion.div>
           ))}
         </motion.div>
-      </div>
-    </section>
-  )
-}
-
-/* ── CEO section ────────────────────────────────────────── */
-export function HomeCEO() {
-  const { t, path } = useLang()
-  const { settings } = useData()
-  return (
-    <section className="sec bg-white relative overflow-hidden">
-      <div className="absolute inset-0 dots-light opacity-50 pointer-events-none"/>
-      <div className="wrap relative">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-
-          {/* Card */}
-          <motion.div initial="hidden" whileInView="show" viewport={{once:true,margin:'-60px'}} variants={fUp}>
-            <div className="relative max-w-[420px]">
-              {/* Glow */}
-              <div className="absolute -inset-6 rounded-full opacity-25 pointer-events-none"
-                style={{ background:'radial-gradient(circle,rgba(0,194,224,.25),transparent 65%)' }}/>
-              {/* Main card */}
-              <div className="relative rounded-3xl overflow-hidden aspect-[4/5] shadow-card-lg"
-                style={{ background:'linear-gradient(145deg,#EAF9FD 0%,#E6EEFF 100%)' }}>
-                <div className="absolute inset-0 dots-light opacity-40"/>
-                <div className="absolute inset-0 flex flex-col items-center justify-center pb-12">
-                  <Logo h={70} variant="default" className="opacity-10 mb-10 grayscale"/>
-                  {settings.ceoImage
-                    ? <img src={settings.ceoImage} alt={settings.ceoName}
-                        className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-card-lg mb-5"/>
-                    : (
-                      <div className="w-40 h-40 rounded-full border-4 border-white shadow-card-lg flex items-center justify-center mb-5"
-                        style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
-                        <span className="text-5xl font-extrabold text-white" style={{ fontFamily:"'Sora',sans-serif" }}>NG</span>
-                      </div>
-                    )
-                  }
-                  <p className="font-bold text-xl text-slate-800" style={{ fontFamily:"'Sora',sans-serif" }}>{settings.ceoName}</p>
-                  <p className="text-cyan text-sm font-semibold mt-1">CEO & Founder</p>
-                  <div className="flex gap-0.5 mt-3">
-                    {[...Array(5)].map((_,i) => (
-                      <svg key={i} viewBox="0 0 16 16" width="15" height="15">
-                        <polygon points="8,1.5 10.2,5.8 15,6.5 11.5,9.8 12.4,14.5 8,12.2 3.6,14.5 4.5,9.8 1,6.5 5.8,5.8" fill="url(#sr)"/>
-                        <defs><linearGradient id="sr"><stop stopColor="#00C2E0"/><stop offset="1" stopColor="#0D3A6E"/></linearGradient></defs>
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-                <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-white to-transparent"/>
-              </div>
-              {/* Badge */}
-              <div className="absolute -bottom-4 -right-4 text-white rounded-2xl px-5 py-3.5 shadow-cyan"
-                style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
-                <div className="text-2xl font-extrabold leading-none" style={{ fontFamily:"'Sora',sans-serif" }}>15+</div>
-                <div className="text-white/75 text-xs font-semibold mt-0.5">{t.hero.stat1Label}</div>
-              </div>
-              {/* Flags */}
-              <div className="absolute -top-3 -right-3 flex gap-1.5">
-                {['🇳🇱','🇲🇦','🇩🇪','🇪🇺'].map(f => (
-                  <div key={f} className="w-9 h-9 rounded-full bg-white border border-slate-100 shadow-card flex items-center justify-center text-sm">{f}</div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Bio */}
-          <motion.div initial="hidden" whileInView="show" viewport={{once:true,margin:'-60px'}} variants={stg}>
-            <motion.span variants={fUp} className="pill mb-5 inline-flex">{t.about.badge}</motion.span>
-            <motion.h2 variants={fUp} className="h-lg text-slate-800 mb-5">
-              {t.about.title.split('\n').map((l,i) => (
-                <span key={i} className="block">{i>0?<span className="grad-text">{l}</span>:l}</span>
-              ))}
-            </motion.h2>
-            <motion.blockquote variants={fUp}
-              className="italic text-slate-600 text-lg leading-relaxed mb-6 pl-5 border-l-[3px] border-cyan">
-              "{t.about.missionText}"
-            </motion.blockquote>
-            <motion.p variants={fUp} className="text-slate-500 leading-relaxed mb-4 text-[15px]">{t.about.p1}</motion.p>
-            <motion.p variants={fUp} className="text-slate-500 leading-relaxed mb-8 text-[15px]">{t.about.p2}</motion.p>
-            <motion.div variants={fUp} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50 mb-8 hover:border-cyan/20 hover:bg-cyan/[0.03] transition-all">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0"
-                style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>NG</div>
-              <div>
-                <div className="font-bold text-slate-800">{settings.ceoName}</div>
-                <div className="text-slate-400 text-xs">{t.about.ceoTitle}</div>
-              </div>
-            </motion.div>
-            <motion.div variants={fUp} className="flex flex-wrap gap-3">
-              <Link to={path('about')} className="btn-primary group">
-                {t.about.learnMore}<ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform"/>
-              </Link>
-              <Link to={path('contact')} className="btn-outline">{t.nav.contact}</Link>
-            </motion.div>
-          </motion.div>
-        </div>
       </div>
     </section>
   )
@@ -361,4 +265,3 @@ export function HomeContactCTA() {
   )
 }
 
-export function HomeAbout() { return <HomeCEO/> }

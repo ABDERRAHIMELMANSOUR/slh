@@ -4,15 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import { useLang } from '../../context/LangContext'
 import { useData } from '../../context/DataContext'
+import SmartImage from '../ui/SmartImage'
+import { HERO_IMAGES, resolveSrc } from '../../config/images'
 
-/* Background art + accent line stay in code; every word comes from the translation
-   files so the NL and EN homepages read natively rather than sharing English copy. */
-const SLIDE_ART = [
-  { bg: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&w=1800&q=80', accent: 2 },
-  { bg: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&w=1800&q=80', accent: 2 },
-  { bg: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&w=1800&q=80', accent: 2 },
-  { bg: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&w=1800&q=80', accent: 1 },
-]
+/* Accent line stays in code; photography comes from the shared image config so every
+   image slot on the site is declared in one place. */
+const SLIDE_ACCENT = [2, 2, 2, 1]
 
 
 /* static drop SVGs so gradient IDs never collide */
@@ -78,21 +75,27 @@ export default function Hero() {
   const { settings } = useData()
   const { heroStats } = settings
 
-  const SLIDES = t.heroSlides.map((copy, i) => ({
-    ...copy,
-    ...SLIDE_ART[i % SLIDE_ART.length],
-    cta1: { label: copy.cta1.label, to: path(copy.cta1.key) },
-    cta2: { label: copy.cta2.label, to: path(copy.cta2.key) },
-  }))
+  const SLIDES = t.heroSlides.map((copy, i) => {
+    const image = HERO_IMAGES[i % HERO_IMAGES.length]
+    return {
+      ...copy,
+      id: i + 1,
+      accent: SLIDE_ACCENT[i % SLIDE_ACCENT.length],
+      image,
+      bg: resolveSrc(image),
+      alt: t.imageAlt[image.altKey] || '',
+      cta1: { label: copy.cta1.label, to: path(copy.cta1.key) },
+      cta2: { label: copy.cta2.label, to: path(copy.cta2.key) },
+    }
+  })
 
   const [cur,     setCur]     = useState(0)
   const [playing, setPlaying] = useState(true)
-  const [loaded,  setLoaded]  = useState({})
   const timerRef = useRef(null)
 
   const goTo = useCallback(i => setCur(i), [])
-  const next = useCallback(() => setCur(c => (c+1) % SLIDE_ART.length), [])
-  const prev = useCallback(() => setCur(c => (c-1+SLIDE_ART.length) % SLIDE_ART.length), [])
+  const next = useCallback(() => setCur(c => (c+1) % HERO_IMAGES.length), [])
+  const prev = useCallback(() => setCur(c => (c-1+HERO_IMAGES.length) % HERO_IMAGES.length), [])
 
   useEffect(() => {
     if (!playing) { clearInterval(timerRef.current); return }
@@ -111,15 +114,18 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden bg-navy-900">
 
-      {/* Bg images */}
+      {/* Bg images — SmartImage keeps a designed industrial motif behind every slide,
+          so a missing or blocked photo never leaves the hero blank. */}
       {SLIDES.map((s, i) => (
         <div key={s.id} className="absolute inset-0 transition-opacity duration-700" style={{ opacity:i===cur?1:0, zIndex:1 }}>
-          <img src={s.bg} alt="" className="w-full h-full object-cover"
-            onLoad={() => setLoaded(p => ({ ...p, [i]:true }))}/>
-          {!loaded[i] && (
-            <div className="absolute inset-0"
-              style={{ background:'linear-gradient(135deg,#051C38,#0D3A6E,#007A91)' }}/>
-          )}
+          <SmartImage
+            src={s.bg}
+            alt={i === cur ? s.alt : ''}
+            motif={s.image.motif}
+            tone="dark"
+            priority={i === 0}
+            className="w-full h-full"
+          />
         </div>
       ))}
 

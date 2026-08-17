@@ -2,7 +2,9 @@ import { useLang } from '../context/LangContext'
 import useSEO from '../hooks/useSEO'
 import Layout from '../components/layout/Layout'
 import Hero from '../components/home/Hero'
-import { StatsStrip, HomeCEO, HomeServices, HomeTechnical, HomeHydrogenBanner, HomeContactCTA } from '../components/home/HomeSections'
+/* The founder profile (HomeCEO) is deliberately not on the homepage — Nouraddine Gribi
+   is featured on the About page only. */
+import { StatsStrip, HomeServices, HomeTechnical, HomeHydrogenBanner, HomeContactCTA } from '../components/home/HomeSections'
 import HomeProjects, { HomeNews, HomePartners } from '../components/home/HomeProjects'
 import { organizationSchema, websiteSchema } from '../lib/schema'
 
@@ -20,7 +22,6 @@ export default function Home() {
       <Hero/>
       <StatsStrip/>
       <HomeTechnical/>
-      <HomeCEO/>
       <HomeServices/>
       <HomeHydrogenBanner/>
       <HomeProjects/>
