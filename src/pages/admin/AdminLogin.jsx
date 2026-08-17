@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
+import { useLang } from '../../context/LangContext'
+import useSEO from '../../hooks/useSEO'
 import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
 import Logo from '../../components/ui/Logo'
 export default function AdminLogin() {
   const [pw,setPw]=useState(''); const [show,setShow]=useState(false); const [err,setErr]=useState('')
-  const {adminLogin}=useData(); const nav=useNavigate()
-  const sub=e=>{e.preventDefault();if(adminLogin(pw))nav('/admin');else{setErr('Incorrect password.');setPw('')}}
+  const {adminLogin}=useData(); const nav=useNavigate(); const {t,lang}=useLang()
+  useSEO({lang,pageKey:'home',title:`${t.admin.login} | SLH Service Nederland`,description:'',noindex:true})
+  const sub=e=>{e.preventDefault();if(adminLogin(pw))nav('/admin');else{setErr(t.admin.wrongPassword);setPw('')}}
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
       style={{ background:'linear-gradient(160deg,#051C38,#0D3A6E,#005E78)' }}>

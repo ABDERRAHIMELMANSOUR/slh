@@ -5,7 +5,7 @@ import { Menu, X, ChevronDown, Globe, ArrowRight } from 'lucide-react'
 import Logo from '../ui/Logo'
 
 export default function Navbar() {
-  const { t, lang, switchLang, LANGUAGES } = useLang()
+  const { t, lang, LANGUAGES, path, altPath } = useLang()
   const [scrolled, setScrolled] = useState(false)
   const [drawer,   setDrawer]   = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)
@@ -34,21 +34,21 @@ export default function Navbar() {
   const cur = LANGUAGES.find(l => l.code === lang)
 
   const primary = [
-    { to: '/',         label: t.nav.home },
-    { to: '/services', label: t.nav.services },
-    { to: '/projects', label: t.nav.projects },
-    { to: '/contact',  label: t.nav.contact },
+    { to: path('home'),      label: t.nav.home },
+    { to: path('technical'), label: t.nav.technical },
+    { to: path('services'),  label: t.nav.services },
+    { to: path('projects'),  label: t.nav.projects },
+    { to: path('contact'),   label: t.nav.contact },
   ]
   const more = [
-    { to: '/about',    label: t.nav.about },
-    { to: '/hydrogen', label: t.nav.hydrogen },
-    { to: '/events',   label: t.nav.events },
-    { to: '/blog',     label: t.nav.blog },
-    { to: '/partners', label: t.nav.partners },
+    { to: path('about'),    label: t.nav.about },
+    { to: path('hydrogen'), label: t.nav.hydrogen },
+    { to: path('events'),   label: t.nav.events },
+    { to: path('blog'),     label: t.nav.blog },
+    { to: path('partners'), label: t.nav.partners },
   ]
-  const moreActive = more.some(l =>
-    loc.pathname === l.to || (l.to !== '/' && loc.pathname.startsWith(l.to))
-  )
+  const home = path('home')
+  const moreActive = more.some(l => loc.pathname === l.to || loc.pathname.startsWith(`${l.to}/`))
 
   const navLinkCls = (active) =>
     `relative px-3.5 py-2 rounded-lg text-[13.5px] font-semibold tracking-wide transition-all duration-200 ${
@@ -76,14 +76,14 @@ export default function Navbar() {
           <div className="flex items-center h-[72px] gap-4">
 
             {/* Logo — always visible, solid */}
-            <Link to="/" className="flex-shrink-0 flex items-center gap-3 mr-4" aria-label="SLH Service Nederland">
+            <Link to={home} className="flex-shrink-0 flex items-center gap-3 mr-4" aria-label="SLH Service Nederland">
               <Logo h={44} variant="default"/>
             </Link>
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center" aria-label="Primary navigation">
               {primary.map(({ to, label }) => (
-                <NavLink key={to} to={to} end={to === '/'}
+                <NavLink key={to} to={to} end={to === home}
                   className={({ isActive }) => navLinkCls(isActive)}>
                   {({ isActive }) => (
                     <>
@@ -101,8 +101,9 @@ export default function Navbar() {
                 <button
                   onClick={() => setMoreOpen(v => !v)}
                   className={`${navLinkCls(moreActive || moreOpen)} flex items-center gap-1`}
+                  aria-expanded={moreOpen}
                 >
-                  More
+                  {t.nav.more}
                   <ChevronDown size={13} className={`transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`}/>
                 </button>
                 {moreOpen && (
@@ -121,12 +122,16 @@ export default function Navbar() {
             {/* Right group */}
             <div className="flex items-center gap-2 ml-auto flex-shrink-0">
 
-              {/* Language switcher */}
+              {/*
+                Language switcher — real <Link>s to the alternate URL, so the NL ⇄ EN
+                relationship is crawlable and not only available to JavaScript.
+              */}
               <div className="relative" ref={langRef}>
                 <button
                   onClick={() => setLangOpen(v => !v)}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-medium border border-slate-200 text-slate-600 bg-slate-50 hover:border-cyan/40 hover:text-cyan-500 transition-all duration-200"
-                  aria-label="Switch language"
+                  aria-label={t.nav.switchLanguage}
+                  aria-expanded={langOpen}
                 >
                   <Globe size={13}/>
                   <span className="hidden sm:inline">{cur?.nativeLabel}</span>
@@ -136,21 +141,22 @@ export default function Navbar() {
                 {langOpen && (
                   <div className="absolute top-full mt-1.5 right-0 w-44 bg-white border border-slate-100 rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-50 p-1.5">
                     {LANGUAGES.map(l => (
-                      <button key={l.code}
-                        onClick={() => { switchLang(l.code); setLangOpen(false) }}
+                      <Link key={l.code}
+                        to={altPath(l.code)}
+                        hrefLang={l.code}
+                        onClick={() => setLangOpen(false)}
                         className={ddItem(l.code === lang)}
                       >
                         <span className="text-sm">{l.flag}</span>
                         <span>{l.nativeLabel}</span>
-                        {l.dir === 'rtl' && <span className="ml-auto text-[9px] text-slate-400 font-mono">RTL</span>}
-                      </button>
+                      </Link>
                     ))}
                   </div>
                 )}
               </div>
 
               {/* CTA button */}
-              <Link to="/contact" className="hidden md:flex btn-primary items-center gap-2 text-[13px] py-2.5 px-5">
+              <Link to={path('contact')} className="hidden md:flex btn-primary items-center gap-2 text-[13px] py-2.5 px-5">
                 {t.nav.getInTouch}
                 <ArrowRight size={14}/>
               </Link>
@@ -159,7 +165,7 @@ export default function Navbar() {
               <button
                 onClick={() => setDrawer(v => !v)}
                 className="lg:hidden p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-navy-600 hover:bg-slate-50 transition-all"
-                aria-label={drawer ? 'Close menu' : 'Open menu'}
+                aria-label={drawer ? t.nav.closeMenu : t.nav.openMenu}
               >
                 {drawer ? <X size={18}/> : <Menu size={18}/>}
               </button>
@@ -186,6 +192,7 @@ export default function Navbar() {
           <button
             onClick={() => setDrawer(false)}
             className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-all"
+            aria-label={t.nav.closeMenu}
           >
             <X size={17}/>
           </button>
@@ -193,9 +200,9 @@ export default function Navbar() {
 
         {/* Drawer nav */}
         <nav className="flex-1 overflow-y-auto p-4">
-          <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase px-3 pb-2 pt-1">Navigation</p>
+          <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase px-3 pb-2 pt-1">{t.nav.navigation}</p>
           {[...primary, ...more].map(({ to, label }) => (
-            <NavLink key={to} to={to} end={to === '/'} onClick={() => setDrawer(false)}
+            <NavLink key={to} to={to} end={to === home} onClick={() => setDrawer(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium mb-0.5 transition-all ${
                   isActive
@@ -212,20 +219,21 @@ export default function Navbar() {
 
         {/* Drawer footer */}
         <div className="p-4 border-t border-slate-100 space-y-3 flex-shrink-0">
-          <div className="grid grid-cols-5 gap-1.5">
+          <div className="grid grid-cols-2 gap-2">
             {LANGUAGES.map(l => (
-              <button key={l.code}
-                onClick={() => { switchLang(l.code); setDrawer(false) }}
-                className={`py-2 rounded-xl text-base text-center transition-all border ${
-                  l.code === lang ? 'border-cyan/40 bg-cyan/[0.08]' : 'border-transparent hover:bg-slate-50'
+              <Link key={l.code}
+                to={altPath(l.code)}
+                hrefLang={l.code}
+                onClick={() => setDrawer(false)}
+                className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-medium text-center transition-all border ${
+                  l.code === lang ? 'border-cyan/40 bg-cyan/[0.08] text-cyan-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
-                title={l.nativeLabel}
               >
-                {l.flag}
-              </button>
+                <span className="text-sm">{l.flag}</span>{l.nativeLabel}
+              </Link>
             ))}
           </div>
-          <Link to="/contact" onClick={() => setDrawer(false)}
+          <Link to={path('contact')} onClick={() => setDrawer(false)}
             className="btn-primary w-full justify-center py-3.5 text-sm">
             {t.nav.getInTouch} <ArrowRight size={14}/>
           </Link>

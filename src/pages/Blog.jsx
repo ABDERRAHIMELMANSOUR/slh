@@ -4,15 +4,16 @@ import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
+import { organizationSchema } from '../lib/schema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { ArrowRight, Search, Globe, Clock, User } from 'lucide-react'
 const fUp={hidden:{opacity:0,y:24},show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}}}
 const stg={hidden:{},show:{transition:{staggerChildren:.09}}}
 export default function Blog() {
-  const {t,lang}=useLang(); const {blog}=useData()
+  const {t,lang,path}=useLang(); const {blog}=useData()
   const [q,setQ]=useState(''); const [cat,setCat]=useState('all')
-  useSEO({title:`${t.nav.blog} | SLH Service Nederland`,description:t.blog.subtitle,path:'/blog',lang})
+  useSEO({lang,pageKey:'blog',title:t.seo.blog.title,description:t.seo.blog.description,jsonLd:[organizationSchema(lang)]})
   const pub=blog.filter(p=>p.published)
   const cats=['all',...new Set(pub.map(p=>p.category).filter(Boolean))]
   const fil=pub.filter(p=>{const mc=cat==='all'||p.category===cat;const ms=!q||p.title.toLowerCase().includes(q.toLowerCase())||p.description.toLowerCase().includes(q.toLowerCase());return mc&&ms})
@@ -32,7 +33,7 @@ export default function Blog() {
           {fil.length===0?<div className="text-center py-20 text-slate-400">{t.blog.noPosts}</div>:
             <>
               {feat&&(
-                <Link to={`/blog/${feat.slug}`} className="group block card shimmer mb-8 overflow-hidden">
+                <Link to={path('blogPost',{slug:feat.slug})} className="group block card shimmer mb-8 overflow-hidden">
                   <div className="grid md:grid-cols-2">
                     <div className="h-64 md:h-auto relative" style={{ background:'linear-gradient(135deg,#EAF9FD,#E6EEFF)',minHeight:'260px' }}>
                       {feat.image?<img src={feat.image} alt={feat.title} className="w-full h-full object-cover absolute inset-0 opacity-80 group-hover:scale-105 transition-transform duration-500"/>:<div className="absolute inset-0 flex items-center justify-center"><Globe size={48} className="text-cyan/20"/></div>}
@@ -56,7 +57,7 @@ export default function Blog() {
               <motion.div initial="hidden" whileInView="show" viewport={{once:true}} variants={stg} className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {rest.map(post=>(
                   <motion.div key={post.id} variants={fUp}>
-                    <Link to={`/blog/${post.slug}`} className="group flex flex-col h-full card shimmer overflow-hidden">
+                    <Link to={path('blogPost',{slug:post.slug})} className="group flex flex-col h-full card shimmer overflow-hidden">
                       <div className="h-48 relative" style={{ background:'linear-gradient(135deg,#EAF9FD,#E6EEFF)' }}>
                         {post.image?<img src={post.image} alt={post.title} className="w-full h-full object-cover absolute inset-0 opacity-80 group-hover:scale-105 transition-transform duration-500"/>:<div className="flex items-center justify-center h-full"><Globe size={36} className="text-cyan/20"/></div>}
                       </div>

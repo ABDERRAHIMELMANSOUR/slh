@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
+import { useLang } from '../../context/LangContext'
+import useSEO from '../../hooks/useSEO'
 import { LayoutDashboard, FolderKanban, Calendar, Newspaper, Users, Settings, LogOut, Plus, Pencil, Trash2, X, Check, ChevronRight, BarChart3, Mail, Image, Upload, Star, Globe, User } from 'lucide-react'
 import Logo from '../../components/ui/Logo'
 
@@ -312,6 +314,8 @@ function SettingsAdmin() {
 
 export default function AdminDashboard() {
   const [sec,setSec]=useState('dashboard')
+  const {t,lang}=useLang()
+  useSEO({lang,pageKey:'home',title:`${t.admin.dashboard} | SLH Service Nederland`,description:'',noindex:true})
   const views={dashboard:<Dashboard onNav={setSec}/>,projects:<ProjectsAdmin/>,events:<EventsAdmin/>,blog:<BlogAdmin/>,partners:<PartnersAdmin/>,settings:<SettingsAdmin/>}
   return (
     <div className="min-h-screen bg-slate-50 flex">

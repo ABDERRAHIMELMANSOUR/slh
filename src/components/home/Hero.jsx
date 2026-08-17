@@ -5,48 +5,15 @@ import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 
 import { useLang } from '../../context/LangContext'
 import { useData } from '../../context/DataContext'
 
-const SLIDES = [
-  {
-    id: 1,
-    bg: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&w=1800&q=80',
-    kicker: 'Green Hydrogen · Morocco–Netherlands',
-    title: ['Driving International', 'Green Hydrogen', 'Partnerships'],
-    accent: 2,
-    sub: 'SLH Service Nederland builds strategic alliances and develops green hydrogen value chains connecting Morocco, the Netherlands, and Europe\'s clean energy future.',
-    cta1: { label: 'Explore Projects', to: '/projects' },
-    cta2: { label: 'Our Services',     to: '/services' },
-  },
-  {
-    id: 2,
-    bg: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&w=1800&q=80',
-    kicker: 'Renewable Energy · Innovation',
-    title: ['Connecting Morocco &', 'Europe Through', 'Sustainable Innovation'],
-    accent: 2,
-    sub: 'Accelerating the energy transition through high-impact economic missions, bilateral partnerships, and renewable energy ecosystem development.',
-    cta1: { label: 'Green Hydrogen',  to: '/hydrogen' },
-    cta2: { label: 'Contact Us',      to: '/contact' },
-  },
-  {
-    id: 3,
-    bg: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&w=1800&q=80',
-    kicker: 'Strategic Consulting · Energy Transition',
-    title: ['Strategic Consulting', 'for the Global', 'Energy Transition'],
-    accent: 2,
-    sub: 'Expert advisory on investment facilitation, public-private partnerships, and regulatory frameworks for sustainable industrial development across two continents.',
-    cta1: { label: 'About SLH',    to: '/about' },
-    cta2: { label: 'Our Partners', to: '/partners' },
-  },
-  {
-    id: 4,
-    bg: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&w=1800&q=80',
-    kicker: 'Economic Missions · International Delegations',
-    title: ['Leading International', 'Economic Missions &', 'Delegations'],
-    accent: 1,
-    sub: 'Organizing high-level bilateral trade missions, ministerial delegations, and B2B matchmaking events at the global intersection of clean energy diplomacy.',
-    cta1: { label: 'Events & Missions', to: '/events' },
-    cta2: { label: 'Get in Touch',      to: '/contact' },
-  },
+/* Background art + accent line stay in code; every word comes from the translation
+   files so the NL and EN homepages read natively rather than sharing English copy. */
+const SLIDE_ART = [
+  { bg: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&w=1800&q=80', accent: 2 },
+  { bg: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&w=1800&q=80', accent: 2 },
+  { bg: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&w=1800&q=80', accent: 2 },
+  { bg: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&w=1800&q=80', accent: 1 },
 ]
+
 
 /* static drop SVGs so gradient IDs never collide */
 function Drops() {
@@ -107,9 +74,16 @@ const ctaV = {
 }
 
 export default function Hero() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const { settings } = useData()
   const { heroStats } = settings
+
+  const SLIDES = t.heroSlides.map((copy, i) => ({
+    ...copy,
+    ...SLIDE_ART[i % SLIDE_ART.length],
+    cta1: { label: copy.cta1.label, to: path(copy.cta1.key) },
+    cta2: { label: copy.cta2.label, to: path(copy.cta2.key) },
+  }))
 
   const [cur,     setCur]     = useState(0)
   const [playing, setPlaying] = useState(true)
@@ -117,8 +91,8 @@ export default function Hero() {
   const timerRef = useRef(null)
 
   const goTo = useCallback(i => setCur(i), [])
-  const next = useCallback(() => setCur(c => (c+1) % SLIDES.length), [])
-  const prev = useCallback(() => setCur(c => (c-1+SLIDES.length) % SLIDES.length), [])
+  const next = useCallback(() => setCur(c => (c+1) % SLIDE_ART.length), [])
+  const prev = useCallback(() => setCur(c => (c-1+SLIDE_ART.length) % SLIDE_ART.length), [])
 
   useEffect(() => {
     if (!playing) { clearInterval(timerRef.current); return }
@@ -216,12 +190,12 @@ export default function Hero() {
             <div className="flex items-center gap-3 mt-10">
               <button onClick={() => setPlaying(v => !v)}
                 className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-all flex-shrink-0"
-                aria-label={playing ? 'Pause slideshow' : 'Play slideshow'}>
+                aria-label={playing ? t.hero.pauseSlideshow : t.hero.playSlideshow}>
                 {playing ? <Pause size={11}/> : <Play size={11}/>}
               </button>
               <div className="flex items-center gap-2">
                 {SLIDES.map((_, i) => (
-                  <button key={i} onClick={() => goTo(i)} aria-label={`Go to slide ${i+1}`}
+                  <button key={i} onClick={() => goTo(i)} aria-label={`${t.hero.goToSlide} ${i+1}`}
                     className={`rounded-full transition-all duration-300 ${i===cur ? 'w-8 h-2.5 bg-cyan' : 'w-2.5 h-2.5 hover:bg-white/50'}`}
                     style={{ background: i===cur ? undefined : 'rgba(255,255,255,0.35)' }}
                   />

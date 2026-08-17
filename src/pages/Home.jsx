@@ -2,16 +2,24 @@ import { useLang } from '../context/LangContext'
 import useSEO from '../hooks/useSEO'
 import Layout from '../components/layout/Layout'
 import Hero from '../components/home/Hero'
-import { StatsStrip, HomeCEO, HomeServices, HomeHydrogenBanner, HomeContactCTA } from '../components/home/HomeSections'
+import { StatsStrip, HomeCEO, HomeServices, HomeTechnical, HomeHydrogenBanner, HomeContactCTA } from '../components/home/HomeSections'
 import HomeProjects, { HomeNews, HomePartners } from '../components/home/HomeProjects'
+import { organizationSchema, websiteSchema } from '../lib/schema'
 
 export default function Home() {
-  const { lang } = useLang()
-  useSEO({ title:'SLH Service Nederland | Green Hydrogen & Energy Transition', description:'International consulting in green hydrogen, energy transition, and Morocco–Netherlands strategic partnerships.', path:'/', lang })
+  const { t, lang } = useLang()
+  useSEO({
+    lang,
+    pageKey: 'home',
+    title: t.seo.home.title,
+    description: t.seo.home.description,
+    jsonLd: [organizationSchema(lang), websiteSchema(lang)],
+  })
   return (
     <Layout>
       <Hero/>
       <StatsStrip/>
+      <HomeTechnical/>
       <HomeCEO/>
       <HomeServices/>
       <HomeHydrogenBanner/>

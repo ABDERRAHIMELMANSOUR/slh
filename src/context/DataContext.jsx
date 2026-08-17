@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { COMPANY, CONTACT_EMAIL, LEGACY_CONTACT_EMAIL } from '../config/site'
 
 const DataContext = createContext(null)
 const STORAGE_KEY = 'slh_data'
@@ -30,14 +31,27 @@ const SAMPLE_PARTNERS = [
 
 const SAMPLE_SETTINGS = {
   adminPassword: 'slh2024admin',
-  phone: '+31 6 00 00 00 00',
-  email: 'contact@slhservice.nl',
+  phone: COMPANY.phone,
+  email: CONTACT_EMAIL,
   ceoName: 'Nouraddine Gribi',
   ceoImage: '',
   address: 'Netherlands',
-  linkedIn: 'https://linkedin.com/company/slhservice',
+  linkedIn: COMPANY.linkedIn,
   heroBadge: 'International Consulting · Morocco–Netherlands',
   heroStats: { years:'10+', countries:'15+', projects:'50+', partners:'100+' },
+}
+
+/**
+ * Settings persist in localStorage, so a returning visitor (or an admin who saved
+ * settings before the rename) would otherwise keep serving the retired address.
+ * Rewrite it on load; any other custom address the admin set is left untouched.
+ */
+function migrateSettings(settings) {
+  const merged = { ...SAMPLE_SETTINGS, ...settings }
+  if (!merged.email || merged.email.trim().toLowerCase() === LEGACY_CONTACT_EMAIL) {
+    merged.email = CONTACT_EMAIL
+  }
+  return merged
 }
 
 function loadData() {
@@ -50,7 +64,7 @@ function loadData() {
         events: d.events || SAMPLE_EVENTS,
         blog: d.blog || SAMPLE_BLOG,
         partners: d.partners || SAMPLE_PARTNERS,
-        settings: { ...SAMPLE_SETTINGS, ...(d.settings || {}) },
+        settings: migrateSettings(d.settings),
       }
     }
   } catch (e) {}

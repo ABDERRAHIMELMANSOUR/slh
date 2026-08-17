@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useLang } from '../../context/LangContext'
 import { useData } from '../../context/DataContext'
-import { ArrowRight, CheckCircle2, Award, Globe, Target, Eye, BarChart3, Users, Zap, Leaf, TrendingUp, Shield, Lightbulb } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Award, Globe, Target, Eye, BarChart3, Users, Zap, Leaf, TrendingUp, Shield, Lightbulb, Wrench } from 'lucide-react'
 import Logo from '../ui/Logo'
 
 const fUp = { hidden:{opacity:0,y:26}, show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}} }
@@ -71,7 +71,7 @@ export function StatsStrip() {
 
 /* ── CEO section ────────────────────────────────────────── */
 export function HomeCEO() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const { settings } = useData()
   return (
     <section className="sec bg-white relative overflow-hidden">
@@ -118,7 +118,7 @@ export function HomeCEO() {
               <div className="absolute -bottom-4 -right-4 text-white rounded-2xl px-5 py-3.5 shadow-cyan"
                 style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
                 <div className="text-2xl font-extrabold leading-none" style={{ fontFamily:"'Sora',sans-serif" }}>15+</div>
-                <div className="text-white/75 text-xs font-semibold mt-0.5">Years Experience</div>
+                <div className="text-white/75 text-xs font-semibold mt-0.5">{t.hero.stat1Label}</div>
               </div>
               {/* Flags */}
               <div className="absolute -top-3 -right-3 flex gap-1.5">
@@ -152,10 +152,10 @@ export function HomeCEO() {
               </div>
             </motion.div>
             <motion.div variants={fUp} className="flex flex-wrap gap-3">
-              <Link to="/about" className="btn-primary group">
+              <Link to={path('about')} className="btn-primary group">
                 {t.about.learnMore}<ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform"/>
               </Link>
-              <Link to="/contact" className="btn-outline">{t.nav.contact}</Link>
+              <Link to={path('contact')} className="btn-outline">{t.nav.contact}</Link>
             </motion.div>
           </motion.div>
         </div>
@@ -166,7 +166,7 @@ export function HomeCEO() {
 
 /* ── Services ───────────────────────────────────────────── */
 export function HomeServices() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const svcs = [
     { Icon:Zap,        k:'s1', c:'#00C2E0' },
     { Icon:Leaf,       k:'s2', c:'#22C55E' },
@@ -203,7 +203,7 @@ export function HomeServices() {
           ))}
         </motion.div>
         <div className="text-center mt-10">
-          <Link to="/services" className="btn-outline group">
+          <Link to={path('services')} className="btn-outline group">
             {t.services.viewAll}<ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform"/>
           </Link>
         </div>
@@ -212,9 +212,63 @@ export function HomeServices() {
   )
 }
 
+/* ── Technical services teaser ──────────────────────────────
+   Primary internal link into the technical services page from the homepage. */
+export function HomeTechnical() {
+  const { t, path } = useLang()
+  const c = t.technical
+  return (
+    <section className="sec bg-white relative overflow-hidden">
+      <div className="absolute inset-0 dots-light opacity-50 pointer-events-none"/>
+      <div className="wrap relative">
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+          <motion.div initial="hidden" whileInView="show" viewport={{once:true,margin:'-60px'}} variants={stg}>
+            <motion.span variants={fUp} className="pill mb-5 inline-flex">{c.badge}</motion.span>
+            <motion.h2 variants={fUp} className="h-lg text-slate-800 mb-5">
+              {c.title.split('\n').map((l,i) => (
+                <span key={i} className="block">{i>0 ? <span className="grad-text">{l}</span> : l}</span>
+              ))}
+            </motion.h2>
+            <motion.p variants={fUp} className="text-slate-500 text-lg leading-relaxed mb-8">{c.subtitle}</motion.p>
+            <motion.div variants={fUp} className="grid sm:grid-cols-2 gap-3 mb-9">
+              {c.specs.slice(0,6).map(s => (
+                <div key={s.title} className="flex items-start gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-card hover:shadow-card-md hover:-translate-y-0.5 transition-all">
+                  <CheckCircle2 size={17} className="text-cyan flex-shrink-0 mt-0.5"/>
+                  <span className="text-slate-600 text-sm font-medium">{s.title}</span>
+                </div>
+              ))}
+            </motion.div>
+            <motion.div variants={fUp} className="flex flex-wrap gap-3">
+              <Link to={path('technical')} className="btn-primary group">
+                {t.nav.technical}<ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform"/>
+              </Link>
+              <Link to={path('contact')} className="btn-outline">{c.ctaBtn}</Link>
+            </motion.div>
+          </motion.div>
+
+          <motion.div initial="hidden" whileInView="show" viewport={{once:true,margin:'-60px'}} variants={stg}
+            className="grid grid-cols-2 gap-4">
+            {c.stats.map(({ v, l }) => (
+              <motion.div key={l} variants={fUp} className="card p-6 text-center hover:border-cyan/20 hover:shadow-card-md">
+                <div className="text-[2.4rem] font-extrabold leading-none mb-2 grad-text" style={{ fontFamily:"'Sora',sans-serif" }}>{v}</div>
+                <div className="text-slate-500 text-[13px] leading-snug">{l}</div>
+              </motion.div>
+            ))}
+            <div className="col-span-2 flex items-center gap-3 p-5 rounded-2xl text-white"
+              style={{ background:'linear-gradient(135deg,#00C2E0,#0D3A6E)' }}>
+              <Wrench size={20} className="flex-shrink-0"/>
+              <span className="text-sm font-semibold leading-snug">{c.introTitle}</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ── Hydrogen banner ────────────────────────────────────── */
 export function HomeHydrogenBanner() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   return (
     <section className="sec relative overflow-hidden"
       style={{ background:'linear-gradient(135deg,#EAF9FD 0%,#EBF0FF 60%,#F3EEFF 100%)' }}>
@@ -238,7 +292,7 @@ export function HomeHydrogenBanner() {
                 </div>
               ))}
             </div>
-            <Link to="/hydrogen" className="btn-primary group">
+            <Link to={path('hydrogen')} className="btn-primary group">
               {t.hydrogen.exploreMore}<ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform"/>
             </Link>
           </div>
@@ -283,7 +337,7 @@ export function HomeHydrogenBanner() {
 
 /* ── CTA banner ─────────────────────────────────────────── */
 export function HomeContactCTA() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   return (
     <section className="py-20 relative overflow-hidden"
       style={{ background:'linear-gradient(135deg,#00C2E0 0%,#0D3A6E 100%)' }}>
@@ -292,14 +346,14 @@ export function HomeContactCTA() {
       <div className="absolute -right-24 -bottom-24 w-96 h-96 rounded-full bg-white/5 blur-3xl pointer-events-none"/>
       <div className="wrap relative z-10 text-center">
         <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}}>
-          <span className="pill-white mb-6 inline-flex">Ready to Collaborate</span>
+          <span className="pill-white mb-6 inline-flex">{t.footer.readyToCollaborate}</span>
           <h2 className="h-lg text-white mb-5 text-balance">{t.contact.title.replace('\n',' ')}</h2>
           <p className="text-white/75 text-lg mb-10 max-w-lg mx-auto">{t.contact.subtitle}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="btn-white group">
+            <Link to={path('contact')} className="btn-white group">
               {t.common.contactUs}<ArrowRight size={17} className="group-hover:translate-x-0.5 transition-transform"/>
             </Link>
-            <Link to="/projects" className="btn-ghost-white">{t.nav.projects}</Link>
+            <Link to={path('projects')} className="btn-ghost-white">{t.nav.projects}</Link>
           </div>
         </motion.div>
       </div>

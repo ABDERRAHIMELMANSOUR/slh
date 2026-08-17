@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
+import { organizationSchema } from '../lib/schema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -14,7 +15,7 @@ const stg  = { hidden:{}, show:{transition:{staggerChildren:.09}} }
 export default function About() {
   const { t, lang } = useLang()
   const { settings } = useData()
-  useSEO({ title:`${t.nav.about} | SLH Service Nederland`, description:t.about.p1, path:'/about', lang })
+  useSEO({ lang, pageKey:'about', title:t.seo.about.title, description:t.seo.about.description, jsonLd:[organizationSchema(lang)] })
   return (
     <Layout>
       <PageHero badge={t.about.badge} title={t.about.title} subtitle={t.about.p1}/>

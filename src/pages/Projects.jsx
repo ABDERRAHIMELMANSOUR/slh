@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
+import { organizationSchema } from '../lib/schema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -40,7 +41,7 @@ function PC({ p, i }) {
 }
 export default function Projects() {
   const {t,lang}=useLang(); const {projects}=useData(); const [f,setF]=useState('All')
-  useSEO({title:`${t.nav.projects} | SLH Service Nederland`,description:t.projects.subtitle,path:'/projects',lang})
+  useSEO({lang,pageKey:'projects',title:t.seo.projects.title,description:t.seo.projects.description,jsonLd:[organizationSchema(lang)]})
   const cats=['All',...new Set(projects.map(p=>p.category).filter(Boolean))]
   const shown=f==='All'?projects:projects.filter(p=>p.category===f)
   return (

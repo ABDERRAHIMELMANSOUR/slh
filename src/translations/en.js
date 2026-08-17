@@ -2,14 +2,53 @@ export default {
   // Meta
   meta: {
     siteName: 'SLH Service Nederland',
-    tagline: 'Green Hydrogen & Energy Transition Consulting',
+    tagline: 'Technical Engineering Services & Green Hydrogen Consulting',
+  },
+
+  /* Per-page <title> and <meta name="description">.
+     Written for the English URL tree (/en/...) — the Dutch file carries its own set so
+     both language variants compete on their own keywords. */
+  seo: {
+    home: {
+      title: 'Technical Engineering Services & Green Hydrogen | SLH Service',
+      description: 'SLH Service Nederland delivers complete technical engineering services in the Netherlands — mechanical engineering, 3D piping design, welding, HVAC — plus green hydrogen consulting.',
+    },
+    about: {
+      title: 'About SLH Service Nederland | Engineering & Consulting',
+      description: 'A Dutch engineering and consulting company combining hands-on technical delivery with international partnership development between Morocco, the Netherlands and the EU.',
+    },
+    services: {
+      title: 'Consulting Services | SLH Service Nederland',
+      description: 'Strategic consulting for green hydrogen, renewable energy, international business development, economic missions and investment facilitation.',
+    },
+    hydrogen: {
+      title: 'Green Hydrogen Consulting | SLH Service Nederland',
+      description: 'Green hydrogen value chains connecting Morocco, the Netherlands and Europe — production, storage, transport and export strategy advisory.',
+    },
+    projects: {
+      title: 'Projects | SLH Service Nederland',
+      description: 'Technical installation projects and green hydrogen ecosystem development delivered across the Netherlands, Europe and North Africa.',
+    },
+    events: {
+      title: 'Events & Economic Missions | SLH Service Nederland',
+      description: 'International conferences, trade missions and summits organised and attended by SLH Service Nederland.',
+    },
+    blog: {
+      title: 'News & Insights | SLH Service Nederland',
+      description: 'Expert perspectives on technical engineering, industrial installation, green hydrogen and the European energy transition.',
+    },
+    partners: {
+      title: 'Partners & Alliances | SLH Service Nederland',
+      description: 'The institutional, industrial and research partners SLH Service Nederland works with across Europe and North Africa.',
+    },
   },
 
   // Navigation
   nav: {
     home: 'Home',
     about: 'About Us',
-    services: 'Services',
+    services: 'Consulting',
+    technical: 'Technical Services',
     hydrogen: 'Green Hydrogen',
     projects: 'Projects',
     events: 'Events & Missions',
@@ -17,11 +56,48 @@ export default {
     partners: 'Partners',
     contact: 'Contact',
     getInTouch: 'Get in Touch',
+    more: 'More',
+    navigation: 'Navigation',
+    switchLanguage: 'Switch language',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
   },
+
+  /* Homepage carousel — art lives in Hero.jsx, copy lives here. */
+  heroSlides: [
+    {
+      kicker: 'Technical Engineering · Netherlands & Europe',
+      title: ['Complete Technical', 'Engineering Services', 'from A to Z'],
+      sub: 'Mechanical engineering, 3D CAD design, industrial welding and pipefitting, heat pumps and HVAC — delivered end to end by a flexible pool of 25 certified specialists.',
+      cta1: { label: 'Technical Services', key: 'technical' },
+      cta2: { label: 'Request a Consultation', key: 'contact' },
+    },
+    {
+      kicker: 'Industrial Installation · Food, Pharma & Process',
+      title: ['Welding, Pipefitting', 'and Food & Pharma', 'Piping Systems'],
+      sub: 'Certified welders and pipefitters executing process, utility and hygienic stainless piping — with qualified procedures, NDT reporting and full material traceability.',
+      cta1: { label: 'Our Specializations', key: 'technical' },
+      cta2: { label: 'View Projects', key: 'projects' },
+    },
+    {
+      kicker: 'Green Hydrogen · Morocco–Netherlands',
+      title: ['Driving International', 'Green Hydrogen', 'Partnerships'],
+      sub: 'SLH Service Nederland builds strategic alliances and develops green hydrogen value chains connecting Morocco, the Netherlands, and Europe\'s clean energy future.',
+      cta1: { label: 'Green Hydrogen', key: 'hydrogen' },
+      cta2: { label: 'Our Consulting', key: 'services' },
+    },
+    {
+      kicker: 'Economic Missions · International Delegations',
+      title: ['Leading International', 'Economic Missions &', 'Delegations'],
+      sub: 'Organizing high-level bilateral trade missions, ministerial delegations, and B2B matchmaking events at the global intersection of clean energy diplomacy.',
+      cta1: { label: 'Events & Missions', key: 'events' },
+      cta2: { label: 'Get in Touch', key: 'contact' },
+    },
+  ],
 
   // Hero
   hero: {
-    badge: 'International Consulting · Morocco–Netherlands',
+    badge: 'Technical Engineering · Netherlands & Europe',
     title: 'Driving the Green\nHydrogen Revolution',
     subtitle: 'SLH Service Nederland builds strategic partnerships and develops green hydrogen value chains connecting Morocco, the Netherlands, and Europe\'s energy future.',
     cta1: 'Explore Projects',
@@ -30,6 +106,9 @@ export default {
     stat2Label: 'Countries Reached',
     stat3Label: 'Projects Delivered',
     stat4Label: 'International Partners',
+    pauseSlideshow: 'Pause slideshow',
+    playSlideshow: 'Play slideshow',
+    goToSlide: 'Go to slide',
   },
 
   // About
@@ -55,7 +134,7 @@ export default {
     value4Text: 'Committed to a net-zero future for generations to come.',
   },
 
-  // Services
+  // Services (consulting)
   services: {
     badge: 'What We Do',
     title: 'Our Core Services',
@@ -78,6 +157,136 @@ export default {
     s8Desc: 'Advising industries on decarbonization pathways, regulatory compliance, and transition planning for a net-zero economy.',
     viewAll: 'View All Services',
     learnMore: 'Learn More',
+    approach: 'Our Approach',
+    howWeWork: 'How We Work',
+    step1Title: 'Discovery',
+    step1Text: 'We assess your goals and market landscape.',
+    step2Title: 'Strategy',
+    step2Text: 'We design a customized strategic roadmap.',
+    step3Title: 'Execution',
+    step3Text: 'We facilitate partnerships and project delivery.',
+    step4Title: 'Impact',
+    step4Text: 'We measure outcomes and optimize for long-term impact.',
+  },
+
+  /* ── Technical Engineering Services ──────────────────────────────
+     Target keywords: technical engineering services Netherlands, mechanical
+     engineering contractor, industrial pipefitting and welding, HVAC heat pump
+     installer Netherlands, food and pharma piping installation. */
+  technical: {
+    metaTitle: 'Technical Engineering Services Netherlands | SLH Service',
+    metaDescription: 'Complete technical engineering in the Netherlands — mechanical engineering, 3D CAD piping, industrial welding, pipefitting, heat pumps and HVAC. 25+ certified specialists.',
+    serviceType: 'Technical Engineering, Mechanical Contracting & Industrial Installation',
+
+    badge: 'Technical Engineering & Support',
+    title: 'Technical Engineering\nServices from A to Z',
+    subtitle: 'SLH Service Nederland takes complete technical ownership of your project — from the first mechanical calculation and 3D CAD drawing through pipefitting, welding and commissioning, delivered by a flexible pool of 25 certified specialists across the Netherlands and Europe.',
+
+    introBadge: 'Complete Technical Relief',
+    introTitle: 'One Partner for the Entire Technical Scope',
+    introP1: 'Industrial clients rarely need one trade — they need engineering, execution and coordination moving as a single team. As a mechanical engineering contractor we absorb that entire scope: concept and calculation, 3D design and isometrics, procurement support, on-site pipefitting and welding, installation of heat pumps and air conditioning, testing, documentation and turnkey handover.',
+    introP2: 'That means one contract, one project coordinator and one accountable party for the technical result — no gaps between disciplines, no schedule lost to hand-offs, and full traceability on every weld and every pressure test.',
+
+    stats: [
+      { v: '25+',     l: 'Certified specialists in our flexible pool' },
+      { v: 'A–Z',     l: 'Engineering, execution and handover' },
+      { v: '100%',    l: 'Documented quality and compliance' },
+      { v: 'NL + EU', l: 'Projects delivered across Europe' },
+    ],
+
+    servicesTitle: 'Core Technical Services',
+    servicesSubtitle: 'Five capabilities that cover a project end to end. Combine them, or bring us in for the single discipline you are missing.',
+    services: [
+      {
+        title: 'Mechanical Engineering Specialist',
+        desc: 'A qualified mechanical engineer on your project from day one — sizing, calculation, material selection, standards compliance and technical risk assessment before a single pipe is cut.',
+        points: ['Thermal and hydraulic calculations', 'Material and standards selection (EN, ASME, ISO)', 'Feasibility studies and technical audits', 'Available per project or as hired capacity'],
+      },
+      {
+        title: '3D Design & CAD Engineering',
+        desc: 'Full 3D models, piping isometrics, P&IDs and fabrication drawings. Clash detection resolves conflicts on screen instead of on site, and the as-built model is handed over with the installation.',
+        points: ['3D plant and piping models', 'Isometrics and spool drawings', 'P&ID and flow scheme development', 'Clash detection and as-built documentation'],
+      },
+      {
+        title: 'Project Coordination & Management',
+        desc: 'One coordinator owns planning, subcontractors, materials, permits and progress reporting — keeping circulation between engineering, workshop and site continuous.',
+        points: ['Planning and resource circulation', 'Subcontractor and supplier management', 'Progress, budget and quality reporting', 'A single point of contact throughout'],
+      },
+      {
+        title: 'Execution & Turnkey Handover',
+        desc: 'Installation, mechanical completion, pressure testing, commissioning and documented handover. You receive a working, certified installation — not a punch list.',
+        points: ['On-site installation and mechanical completion', 'Pressure testing and commissioning', 'Certificates, NDT reports and as-built files', 'Aftercare and maintenance agreements'],
+      },
+      {
+        title: 'Flexible Pool of 25 Certified Specialists',
+        desc: 'Scale up for a shutdown, scale back afterwards. Our flexible shell of 25 experienced welders, pipefitters, plumbers and installers deploys at short notice, fully certified and insured.',
+        points: ['Certified welders and pipefitters', 'Short-notice deployment for shutdowns', 'Long-term secondment options', 'VCA-certified, fully insured personnel'],
+      },
+    ],
+
+    specTitle: 'Technical Specializations',
+    specSubtitle: 'Disciplines we execute in-house, to industrial standard.',
+    specs: [
+      { title: 'Industrial Welding',                desc: 'Certified TIG, MIG/MAG and stick welding in carbon steel, stainless steel and duplex — with qualified WPS/WPQR and NDT reporting.' },
+      { title: 'Pipefitting & Piping Systems',      desc: 'Prefabrication and on-site assembly of process, utility and steam piping, from isometric drawing through to pressure test.' },
+      { title: 'Plumbing Systems',                  desc: 'Sanitary and utility plumbing for commercial and industrial buildings, executed to Dutch building standards.' },
+      { title: 'Heat Pump Installations',           desc: 'Design and installation of commercial heat pump systems — hybrid, all-electric and industrial process heat.' },
+      { title: 'Air Conditioning & HVAC',           desc: 'Climate installations, ventilation, cooling and air handling, including controls, balancing and commissioning.' },
+      { title: 'Building Utilities',                desc: 'Complete building-bound installations: heating, cooling, water, gas and mechanical building services.' },
+      { title: 'Food & Pharma Grade Installations', desc: 'Hygienic and orbital-welded stainless piping for food, beverage and pharmaceutical production, with full material traceability.' },
+      { title: 'Hot & Cold Water Systems',          desc: 'Distribution, storage and legionella-safe design of hot and cold water systems in industry and utility buildings.' },
+    ],
+
+    processTitle: 'How an A-to-Z Project Runs',
+    processSubtitle: 'Four stages, one accountable partner.',
+    process: [
+      { n: '01', title: 'Intake & Feasibility',        desc: 'We walk the site, map the technical scope and constraints, and return a clear picture of what is required — including where the real risk sits.' },
+      { n: '02', title: 'Engineering & 3D Design',     desc: 'Calculations, 3D model, isometrics and material lists. You approve a design already checked for clashes and buildability.' },
+      { n: '03', title: 'Prefabrication & Installation', desc: 'Spools are prefabricated wherever that saves time on site; certified welders and pipefitters execute the installation under one coordinator.' },
+      { n: '04', title: 'Testing & Turnkey Handover',  desc: 'Pressure testing, NDT, commissioning and a complete documentation package — the installation is handed over ready for production.' },
+    ],
+
+    sectorsTitle: 'Sectors We Serve',
+    sectorsSubtitle: 'Industrial environments where downtime is expensive and documentation is not optional.',
+    sectors: [
+      'Food & beverage production',
+      'Pharmaceutical and biotech',
+      'Process and manufacturing industry',
+      'Utility and commercial buildings',
+      'Energy and heat transition',
+      'Water treatment and distribution',
+      'Logistics and cold storage',
+      'Maritime and offshore support',
+    ],
+
+    whyTitle: 'Why Clients Hand Us the Whole Scope',
+    whySubtitle: 'Technical relief only works if one party is genuinely accountable for the result.',
+    why: [
+      { title: 'One accountable partner',      desc: 'Engineering and execution under a single contract removes the finger-pointing between designer and installer.' },
+      { title: 'Certified craftsmanship',      desc: 'Qualified welding procedures, VCA-certified specialists and documented NDT on every critical joint.' },
+      { title: 'Capacity that flexes',         desc: '25 experienced professionals available to scale a shutdown up — and to scale back down when it ends.' },
+      { title: 'Engineering that builds',      desc: 'Our designers work alongside the crews who install. Drawings are made to be built, not only to be approved.' },
+      { title: 'Full documentation',           desc: 'Material certificates, weld books, test reports and as-built drawings delivered as standard, not on request.' },
+      { title: 'Dutch and European reach',     desc: 'Projects delivered throughout the Netherlands and across the EU, with project management in Dutch and English.' },
+    ],
+
+    faqTitle: 'Frequently Asked Questions',
+    faqSubtitle: 'The questions technical buyers ask us first.',
+    faqs: [
+      { q: 'Can I hire a mechanical engineer for a single project?', a: 'Yes. Our mechanical engineering specialists are available per project, per phase, or as hired capacity inside your own team — from a few days of calculation work to full-time secondment for the duration of a build.' },
+      { q: 'Do you deliver 3D engineering and installation, or only one of the two?', a: 'Both, and that is the point of technical relief from A to Z. We deliver a standalone 3D piping design package, a standalone installation crew, or the full chain from calculation through commissioning under one contract.' },
+      { q: 'Are your welders certified for food and pharmaceutical work?', a: 'Yes. We execute hygienic and orbital-welded stainless steel piping for food, beverage and pharma production, with qualified welding procedures and complete material traceability on every joint.' },
+      { q: 'How quickly can you deploy people for a shutdown?', a: 'Our flexible pool of 25 certified specialists exists precisely for peak demand. Send us the scope and the dates and we will confirm the crew we can put on site.' },
+      { q: 'Do you work outside the Netherlands?', a: 'Yes. We deliver projects throughout the Netherlands and across Europe, with project management available in Dutch and English.' },
+      { q: 'Do you install commercial heat pumps and air conditioning?', a: 'Yes. We design and install commercial and industrial heat pump systems, air conditioning, ventilation and complete building-bound installations, including controls, balancing and handover documentation.' },
+    ],
+
+    ctaBadge: 'Start Your Project',
+    ctaTitle: 'Tell us what needs to be built.',
+    ctaText: 'Send your scope, drawings, or a short description of the problem. You will get a technical answer from an engineer — not a sales script.',
+    ctaBtn: 'Request a technical consultation',
+    ctaBtn2: 'Email us directly',
+    heroCta: 'Request a technical consultation',
   },
 
   // Hydrogen
@@ -101,7 +310,7 @@ export default {
   projects: {
     badge: 'Our Work',
     title: 'Featured Projects',
-    subtitle: 'Real impact through strategic consulting, international partnerships, and green hydrogen ecosystem development.',
+    subtitle: 'Real impact through technical delivery, strategic consulting, and green hydrogen ecosystem development.',
     viewAll: 'View All Projects',
     viewProject: 'View Project',
     noProjects: 'Projects coming soon.',
@@ -130,7 +339,7 @@ export default {
   blog: {
     badge: 'News & Insights',
     title: 'Latest from SLH',
-    subtitle: 'Expert perspectives on green hydrogen, energy transition policy, and Morocco-Europe market developments.',
+    subtitle: 'Expert perspectives on technical engineering, green hydrogen, energy transition policy, and Morocco-Europe market developments.',
     readMore: 'Read More',
     viewAll: 'View All Articles',
     noPosts: 'Articles coming soon.',
@@ -141,6 +350,9 @@ export default {
     by: 'By',
     minRead: 'min read',
     all: 'All',
+    notFound: 'Article not found',
+    articleIntro: 'SLH Service Nederland combines complete technical engineering services with international consulting in green hydrogen and the energy transition.',
+    articleContact: 'For more information, contact us at',
   },
 
   // Partners
@@ -150,29 +362,47 @@ export default {
     subtitle: 'We collaborate with leading organizations, government bodies, and industry players driving the global energy transition.',
     bePartner: 'Become a Partner',
     noPartners: 'Partner logos coming soon.',
+    getInTouch: 'Get in Touch',
   },
 
   // Contact
   contact: {
+    metaTitle: 'Contact SLH Service Nederland | Request a Technical Consultation',
+    metaDescription: 'Request a technical consultation or a quotation. Reach SLH Service Nederland at info@slhservice.nl for engineering, installation and consulting projects.',
     badge: 'Get in Touch',
     title: 'Let\'s Build the\nFuture Together',
-    subtitle: 'Whether you\'re exploring green hydrogen opportunities, seeking strategic partnerships, or planning an international mission — we\'re here to help.',
+    subtitle: 'Whether you need complete technical relief on an installation project, a mechanical engineer for a single phase, or strategic guidance on green hydrogen — we\'re here to help.',
     name: 'Full Name',
     email: 'Email Address',
     phone: 'Phone Number',
-    company: 'Company / Organization',
-    subject: 'Subject',
-    message: 'Your Message',
+    company: 'Company Name',
+    service: 'Service You Need',
+    message: 'Project Scope',
     namePlaceholder: 'John Smith',
     emailPlaceholder: 'john@company.com',
     phonePlaceholder: '+31 6 ...',
     companyPlaceholder: 'Your Company',
-    subjectPlaceholder: 'Green Hydrogen Partnership',
-    messagePlaceholder: 'Tell us about your project or inquiry...',
+    servicePlaceholder: 'Select a service...',
+    serviceOptions: [
+      { value: 'mechanical-engineering', label: 'Mechanical Engineering Specialist' },
+      { value: '3d-engineering',         label: '3D Design & CAD Engineering' },
+      { value: 'pipefitting-welding',    label: 'Industrial Pipefitting & Welding' },
+      { value: 'heat-pump-hvac',         label: 'Heat Pumps, HVAC & Air Conditioning' },
+      { value: 'food-pharma',            label: 'Food & Pharma Piping Installation' },
+      { value: 'building-utilities',     label: 'Building Utilities & Plumbing' },
+      { value: 'project-coordination',   label: 'Project Coordination & Turnkey Delivery' },
+      { value: 'flexible-capacity',      label: 'Flexible Specialist Capacity (25+ pool)' },
+      { value: 'green-hydrogen',         label: 'Green Hydrogen & Energy Transition Consulting' },
+      { value: 'other',                  label: 'Other / Not sure yet' },
+    ],
+    messagePlaceholder: 'Describe the scope: type of installation, location, timeline, and what you need from us...',
     send: 'Send Message',
     sending: 'Sending...',
-    success: 'Message sent successfully! We\'ll be in touch within 24 hours.',
-    error: 'Something went wrong. Please try again or email us directly.',
+    successTitle: 'Message Sent',
+    success: 'Thank you — your request reached our team. We\'ll be in touch within one working day.',
+    sendAnother: 'Send Another',
+    error: 'Something went wrong. Please try again or email us directly at',
+    emailInvalid: 'A valid email address is required',
     privacy: 'I agree to the',
     privacyLink: 'privacy policy',
     office: 'Our Office',
@@ -181,18 +411,28 @@ export default {
     phoneLabel: 'Phone',
     scheduleCall: 'Schedule a Call',
     directContact: 'Direct Contact',
+    ceoNote: 'Available for technical project intake, engineering capacity questions, and strategic partnership discussions.',
   },
 
   // Footer
   footer: {
-    tagline: 'International consulting in green hydrogen, energy transition, and Morocco–Netherlands strategic partnerships.',
+    tagline: 'Complete technical engineering services and international consulting in green hydrogen and the energy transition.',
     quickLinks: 'Quick Links',
     services: 'Services',
+    serviceList: [
+      'Technical Engineering A–Z',
+      'Mechanical Engineering',
+      '3D Design & CAD Engineering',
+      'Industrial Welding & Pipefitting',
+      'Heat Pumps, HVAC & Cooling',
+      'Food & Pharma Piping',
+    ],
     contact: 'Contact',
     copyright: '© 2024 SLH Service Nederland. All rights reserved.',
     privacy: 'Privacy Policy',
     terms: 'Terms of Use',
     ceo: 'CEO',
+    readyToCollaborate: 'Ready to Collaborate',
   },
 
   // Admin

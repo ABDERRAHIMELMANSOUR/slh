@@ -1,12 +1,16 @@
 # SLH Service Nederland — robots.txt
 # https://slhservice.nl
+#
+# The site serves two fully separated language trees: /nl/ (default, x-default)
+# and /en/. Both are open to crawling; only the admin panel is blocked.
 
 User-agent: *
 Allow: /
+Allow: /nl/
+Allow: /en/
 
-# Block admin from indexing
+# Admin panel — never indexed
 Disallow: /admin
 Disallow: /admin/
 
-# Sitemap
 Sitemap: https://slhservice.nl/sitemap.xml

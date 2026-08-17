@@ -66,7 +66,7 @@ function PCard({ p, i }) {
 }
 
 export default function HomeProjects() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const { projects } = useData()
   return (
     <section className="sec bg-white relative overflow-hidden">
@@ -78,7 +78,7 @@ export default function HomeProjects() {
             <span className="pill mb-4 inline-flex">{t.projects.badge}</span>
             <h2 className="h-lg text-slate-800">{t.projects.title}</h2>
           </div>
-          <Link to="/projects" className="hidden sm:flex items-center gap-2 text-cyan font-semibold text-sm hover:gap-3 transition-all pb-1">
+          <Link to={path('projects')} className="hidden sm:flex items-center gap-2 text-cyan font-semibold text-sm hover:gap-3 transition-all pb-1">
             {t.projects.viewAll} <ArrowRight size={14}/>
           </Link>
         </div>
@@ -87,7 +87,7 @@ export default function HomeProjects() {
           {projects.slice(0,3).map((p,i) => <PCard key={p.id} p={p} i={i}/>)}
         </motion.div>
         <div className="text-center mt-8 sm:hidden">
-          <Link to="/projects" className="btn-outline gap-2">{t.projects.viewAll}<ArrowRight size={14}/></Link>
+          <Link to={path('projects')} className="btn-outline gap-2">{t.projects.viewAll}<ArrowRight size={14}/></Link>
         </div>
       </div>
     </section>
@@ -95,7 +95,7 @@ export default function HomeProjects() {
 }
 
 export function HomeNews() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const { blog } = useData()
   const posts = blog.filter(p => p.published).slice(0,3)
   if (!posts.length) return null
@@ -107,12 +107,12 @@ export function HomeNews() {
             <span className="pill mb-4 inline-flex">{t.blog.badge}</span>
             <h2 className="h-lg text-slate-800">{t.blog.title}</h2>
           </div>
-          <Link to="/blog" className="hidden sm:flex items-center gap-2 text-cyan font-semibold text-sm hover:gap-3 transition-all pb-1">{t.blog.viewAll} <ArrowRight size={14}/></Link>
+          <Link to={path('blog')} className="hidden sm:flex items-center gap-2 text-cyan font-semibold text-sm hover:gap-3 transition-all pb-1">{t.blog.viewAll} <ArrowRight size={14}/></Link>
         </div>
         <motion.div initial="hidden" whileInView="show" viewport={{once:true}} variants={stg} className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map(post => (
             <motion.div key={post.id} variants={fUp}>
-              <Link to={`/blog/${post.slug}`} className="group flex flex-col h-full card shimmer overflow-hidden">
+              <Link to={path('blogPost', { slug: post.slug })} className="group flex flex-col h-full card shimmer overflow-hidden">
                 <div className="h-44 relative flex items-center justify-center" style={{ background:'linear-gradient(135deg,#EAF9FD,#E6EEFF)' }}>
                   {post.image
                     ? <img src={post.image} alt={post.title} className="w-full h-full object-cover absolute inset-0 opacity-80 group-hover:scale-105 transition-transform duration-500"/>
@@ -141,7 +141,7 @@ export function HomeNews() {
 }
 
 export function HomePartners() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const { partners } = useData()
   const active = partners.filter(p => p.active)
   if (!active.length) return null

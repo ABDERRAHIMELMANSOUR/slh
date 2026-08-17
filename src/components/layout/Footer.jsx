@@ -5,26 +5,20 @@ import { Mail, Phone, MapPin, Linkedin, ArrowRight } from 'lucide-react'
 import Logo from '../ui/Logo'
 
 export default function Footer() {
-  const { t } = useLang()
+  const { t, path } = useLang()
   const { settings } = useData()
   const year = new Date().getFullYear()
 
   const links1 = [
-    { to:'/', label:t.nav.home },
-    { to:'/about', label:t.nav.about },
-    { to:'/services', label:t.nav.services },
-    { to:'/hydrogen', label:t.nav.hydrogen },
-    { to:'/projects', label:t.nav.projects },
-    { to:'/events', label:t.nav.events },
+    { to:path('home'),      label:t.nav.home },
+    { to:path('technical'), label:t.nav.technical },
+    { to:path('about'),     label:t.nav.about },
+    { to:path('services'),  label:t.nav.services },
+    { to:path('hydrogen'),  label:t.nav.hydrogen },
+    { to:path('projects'),  label:t.nav.projects },
+    { to:path('events'),    label:t.nav.events },
   ]
-  const links2 = [
-    'Green Hydrogen Consulting',
-    'Renewable Energy Strategy',
-    'Economic Missions',
-    'Investment Facilitation',
-    'PPP Development',
-    'Energy Transition Support',
-  ]
+  const links2 = t.footer.serviceList
 
   return (
     <footer>
@@ -38,7 +32,7 @@ export default function Footer() {
               style={{ fontFamily:"'Sora',sans-serif" }}>{t.contact.title.replace('\n',' ')}</h3>
             <p className="text-white/70 text-[15px] leading-relaxed">{t.footer.tagline}</p>
           </div>
-          <Link to="/contact"
+          <Link to={path('contact')}
             className="flex-shrink-0 inline-flex items-center gap-3 bg-white font-semibold px-7 py-3.5 rounded-full hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300 group"
             style={{ color:'#0D3A6E' }}>
             {t.common.contactUs}
@@ -119,7 +113,7 @@ export default function Footer() {
                   </div>
                 </div>
                 <div className="h-px bg-white/[0.08]"/>
-                <Link to="/contact"
+                <Link to={path('contact')}
                   className="block text-center py-2.5 rounded-xl text-cyan text-[13px] font-semibold hover:text-white transition-all"
                   style={{ background:'rgba(0,194,224,.08)', border:'1px solid rgba(0,194,224,.22)' }}>
                   {t.contact.scheduleCall}

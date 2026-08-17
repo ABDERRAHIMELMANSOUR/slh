@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
+import { organizationSchema } from '../lib/schema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -10,8 +11,8 @@ import { Globe, ExternalLink } from 'lucide-react'
 const fUp={hidden:{opacity:0,y:24},show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}}}
 const stg={hidden:{},show:{transition:{staggerChildren:.08}}}
 export default function Partners() {
-  const {t,lang}=useLang(); const {partners}=useData()
-  useSEO({title:`${t.nav.partners} | SLH Service Nederland`,description:t.partners.subtitle,path:'/partners',lang})
+  const {t,lang,path}=useLang(); const {partners}=useData()
+  useSEO({lang,pageKey:'partners',title:t.seo.partners.title,description:t.seo.partners.description,jsonLd:[organizationSchema(lang)]})
   const active=partners.filter(p=>p.active)
   return (
     <Layout>
@@ -39,7 +40,7 @@ export default function Partners() {
         <div className="wrap text-center">
           <h2 className="h-lg text-slate-800 mb-4" style={{ fontFamily:"'Sora',sans-serif" }}>{t.partners.bePartner}</h2>
           <p className="text-slate-500 mb-8 max-w-xl mx-auto">Join our growing network of strategic partners driving the global green hydrogen and energy transition forward.</p>
-          <Link to="/contact" className="btn-primary">Get in Touch</Link>
+          <Link to={path('contact')} className="btn-primary">{t.partners.getInTouch}</Link>
         </div>
       </section>
       <HomeContactCTA/>

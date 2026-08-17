@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LangContext'
 import useSEO from '../hooks/useSEO'
+import { organizationSchema } from '../lib/schema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -10,7 +11,7 @@ const fUp = { hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:
 const stg  = { hidden:{}, show:{transition:{staggerChildren:.08}} }
 export default function Services() {
   const { t, lang } = useLang()
-  useSEO({ title:`${t.nav.services} | SLH Service Nederland`, description:t.services.subtitle, path:'/services', lang })
+  useSEO({ lang, pageKey:'services', title:t.seo.services.title, description:t.seo.services.description, jsonLd:[organizationSchema(lang)] })
   const svcs = [
     {Icon:Zap,k:'s1',c:'#00C2E0'},{Icon:Leaf,k:'s2',c:'#22C55E'},{Icon:Globe,k:'s3',c:'#3B82F6'},
     {Icon:TrendingUp,k:'s4',c:'#8B5CF6'},{Icon:Users,k:'s5',c:'#F59E0B'},{Icon:BarChart3,k:'s6',c:'#EF4444'},
@@ -41,11 +42,11 @@ export default function Services() {
       <section className="sec relative" style={{ background:'linear-gradient(180deg,#F8FAFC,#fff)' }}>
         <div className="wrap">
           <div className="text-center mb-14">
-            <span className="pill mb-5 inline-flex">Our Approach</span>
-            <h2 className="h-lg text-slate-800">How We Work</h2>
+            <span className="pill mb-5 inline-flex">{t.services.approach}</span>
+            <h2 className="h-lg text-slate-800">{t.services.howWeWork}</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[['01','Discovery','We assess your goals and market landscape.'],['02','Strategy','We design a customized strategic roadmap.'],['03','Execution','We facilitate partnerships and project delivery.'],['04','Impact','We measure outcomes and optimize for long-term impact.']].map(([n,ti,tx])=>(
+            {[['01',t.services.step1Title,t.services.step1Text],['02',t.services.step2Title,t.services.step2Text],['03',t.services.step3Title,t.services.step3Text],['04',t.services.step4Title,t.services.step4Text]].map(([n,ti,tx])=>(
               <div key={n} className="group card p-7 text-center hover:border-cyan/20 hover:shadow-card-md">
                 <div className="text-4xl font-extrabold mb-4 leading-none grad-text" style={{ fontFamily:"'Sora',sans-serif" }}>{n}</div>
                 <h3 className="font-bold text-slate-800 mb-2 group-hover:text-cyan transition-colors" style={{ fontFamily:"'Sora',sans-serif" }}>{ti}</h3>

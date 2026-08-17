@@ -1,53 +1,72 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import en from '../translations/en'
 import nl from '../translations/nl'
-import fr from '../translations/fr'
-import ar from '../translations/ar'
-import es from '../translations/es'
+import {
+  LANGUAGES,
+  LOCALES,
+  DEFAULT_LOCALE,
+  alternatePath,
+  isLocale,
+  parsePath,
+  pathFor,
+} from '../i18n/routes'
 
-const TRANSLATIONS = { en, nl, fr, ar, es }
-
-export const LANGUAGES = [
-  { code: 'en', label: 'English',    nativeLabel: 'English',    flag: '🇬🇧', dir: 'ltr' },
-  { code: 'nl', label: 'Dutch',      nativeLabel: 'Nederlands', flag: '🇳🇱', dir: 'ltr' },
-  { code: 'fr', label: 'French',     nativeLabel: 'Français',   flag: '🇫🇷', dir: 'ltr' },
-  { code: 'ar', label: 'Arabic',     nativeLabel: 'العربية',    flag: '🇲🇦', dir: 'rtl' },
-  { code: 'es', label: 'Spanish',    nativeLabel: 'Español',    flag: '🇪🇸', dir: 'ltr' },
-]
+const TRANSLATIONS = { nl, en }
+const STORAGE_KEY = 'slh_lang'
 
 const LangContext = createContext(null)
 
-export function LangProvider({ children }) {
-  const [lang, setLang] = useState(() => {
-    const saved = localStorage.getItem('slh_lang')
-    return LANGUAGES.find(l => l.code === saved) ? saved : 'en'
-  })
+/** Language preference is only a fallback for non-localized routes (admin); the URL always wins. */
+function storedLocale() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    return isLocale(saved) ? saved : null
+  } catch {
+    return null
+  }
+}
 
-  const t = TRANSLATIONS[lang] || TRANSLATIONS.en
-  const langConfig = LANGUAGES.find(l => l.code === lang)
-  const isRTL = langConfig?.dir === 'rtl'
+export function LangProvider({ children }) {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+
+  // Memoized so the context value keeps a stable identity between renders.
+  const { locale: urlLocale, key: pageKey, params: pageParams } = useMemo(() => parsePath(pathname), [pathname])
+  const lang = urlLocale ?? storedLocale() ?? DEFAULT_LOCALE
+
+  const t = TRANSLATIONS[lang] || TRANSLATIONS[DEFAULT_LOCALE]
+  const langConfig = LANGUAGES.find((l) => l.code === lang)
 
   useEffect(() => {
-    localStorage.setItem('slh_lang', lang)
-    document.documentElement.lang = lang
-    document.body.dir = isRTL ? 'rtl' : 'ltr'
-    document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr')
-    if (isRTL) {
-      document.body.style.fontFamily = "'Tajawal', sans-serif"
-    } else {
-      document.body.style.fontFamily = "'Inter', system-ui, sans-serif"
-    }
-  }, [lang, isRTL])
+    try { localStorage.setItem(STORAGE_KEY, lang) } catch { /* storage disabled */ }
+    document.documentElement.lang = langConfig?.htmlLang || lang
+    document.documentElement.setAttribute('dir', 'ltr')
+  }, [lang, langConfig])
 
-  const switchLang = (code) => {
-    if (LANGUAGES.find(l => l.code === code)) setLang(code)
-  }
+  const value = useMemo(() => ({
+    lang,
+    t,
+    langConfig,
+    LANGUAGES,
+    LOCALES,
+    /** Current page identity, so components can build their own alternates. */
+    pageKey,
+    pageParams,
+    /** Localized href for a page key in the active language. */
+    path: (key = 'home', params = {}) => pathFor(lang, key, params),
+    /** Same page in another language — used by the switcher and hreflang tags. */
+    altPath: (targetLocale) => alternatePath(pathname, targetLocale),
+    /** Switch language while staying on the equivalent page. */
+    switchLang: (code) => {
+      if (!isLocale(code) || code === lang) return
+      navigate(alternatePath(pathname, code))
+    },
+  }), [lang, t, langConfig, pageKey, pageParams, pathname, navigate])
 
-  return (
-    <LangContext.Provider value={{ lang, t, isRTL, langConfig, switchLang, LANGUAGES }}>
-      {children}
-    </LangContext.Provider>
-  )
+  return <LangContext.Provider value={value}>{children}</LangContext.Provider>
 }
 
 export const useLang = () => useContext(LangContext)
+
+export { LANGUAGES }

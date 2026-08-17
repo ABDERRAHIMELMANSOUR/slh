@@ -1,8 +1,23 @@
 {
+  "redirects": [
+    { "source": "/", "destination": "/nl", "permanent": true },
+
+    { "source": "/about",      "destination": "/nl/over-ons",         "permanent": true },
+    { "source": "/services",   "destination": "/nl/diensten",         "permanent": true },
+    { "source": "/hydrogen",   "destination": "/nl/groene-waterstof", "permanent": true },
+    { "source": "/projects",   "destination": "/nl/projecten",        "permanent": true },
+    { "source": "/events",     "destination": "/nl/evenementen",      "permanent": true },
+    { "source": "/blog",       "destination": "/nl/nieuws",           "permanent": true },
+    { "source": "/blog/:slug", "destination": "/nl/nieuws/:slug",     "permanent": true },
+    { "source": "/partners",   "destination": "/nl/partners",         "permanent": true },
+    { "source": "/contact",    "destination": "/nl/contact",          "permanent": true }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     { "source": "/sitemap.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }] },
     { "source": "/robots.txt",  "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/admin",       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] },
+    { "source": "/admin/(.*)",  "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] },
     { "source": "/(.*)", "headers": [
       { "key": "X-Content-Type-Options", "value": "nosniff" },
       { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
