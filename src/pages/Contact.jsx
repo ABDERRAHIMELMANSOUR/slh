@@ -6,7 +6,7 @@ import useSEO from '../hooks/useSEO'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { CONTACT_FORM_ENDPOINT } from '../config/site'
-import { breadcrumbSchema, organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import { urlFor } from '../i18n/routes'
 import { Mail, Phone, Globe, CheckCircle2, AlertCircle, Loader2, Wrench } from 'lucide-react'
 
@@ -15,6 +15,7 @@ const EMPTY = { name:'', company:'', email:'', phone:'', service:'', message:'',
 export default function Contact() {
   const { t, lang } = useLang()
   const { settings } = useData()
+  const schema = useSchema()
 
   useSEO({
     lang,
@@ -22,8 +23,8 @@ export default function Contact() {
     title: t.contact.metaTitle,
     description: t.contact.metaDescription,
     jsonLd: [
-      organizationSchema(lang),
-      breadcrumbSchema([
+      schema.organization(),
+      schema.breadcrumb([
         { name: t.nav.home, url: urlFor(lang, 'home') },
         { name: t.nav.contact, url: urlFor(lang, 'contact') },
       ]),

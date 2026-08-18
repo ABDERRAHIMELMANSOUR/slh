@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
-import { organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -36,8 +36,9 @@ function EC({ ev }) {
   )
 }
 export default function Events() {
-  const {t,lang}=useLang(); const {events}=useData(); const [tab,setTab]=useState('upcoming')
-  useSEO({lang,pageKey:'events',title:t.seo.events.title,description:t.seo.events.description,jsonLd:[organizationSchema(lang)]})
+  const {t,lang}=useLang()
+  const schema = useSchema(); const {events}=useData(); const [tab,setTab]=useState('upcoming')
+  useSEO({lang,pageKey:'events',title:t.seo.events.title,description:t.seo.events.description,jsonLd:[schema.organization()]})
   const now=new Date()
   const up=events.filter(e=>new Date(e.date)>=now).sort((a,b)=>new Date(a.date)-new Date(b.date))
   const pa=events.filter(e=>new Date(e.date)<now).sort((a,b)=>new Date(b.date)-new Date(a.date))

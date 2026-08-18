@@ -8,7 +8,7 @@ import PageHero from '../components/ui/PageHero'
 import SmartImage from '../components/ui/SmartImage'
 import { TECHNICAL_GALLERY, resolveSrc } from '../config/images'
 import { urlFor } from '../i18n/routes'
-import { breadcrumbSchema, faqSchema, organizationSchema, serviceSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import {
   ArrowRight, Boxes, CheckCircle2, ClipboardList, Compass, Droplets,
   Factory, Flame, Layers, Mail, Ruler, Snowflake, Sparkles, Users,
@@ -41,6 +41,7 @@ const SPEC_VISUALS = [
 
 export default function TechnicalServices() {
   const { t, lang, path } = useLang()
+  const schema = useSchema()
   const { settings } = useData()
   const c = t.technical
 
@@ -52,20 +53,19 @@ export default function TechnicalServices() {
     title: c.metaTitle,
     description: c.metaDescription,
     jsonLd: [
-      organizationSchema(lang),
-      serviceSchema({
-        lang,
+      schema.organization(),
+      schema.service({
         name: c.title.replace('\n', ' '),
         description: c.metaDescription,
         serviceType: c.serviceType,
         url: pageUrl,
         offers: c.specs.map(s => s.title),
       }),
-      breadcrumbSchema([
+      schema.breadcrumb([
         { name: t.nav.home, url: urlFor(lang, 'home') },
         { name: t.nav.technical, url: pageUrl },
       ]),
-      faqSchema(c.faqs),
+      schema.faq(c.faqs),
     ],
   })
 

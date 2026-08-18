@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import useSEO from '../hooks/useSEO'
-import { organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -10,7 +10,8 @@ const fUp = { hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:
 const stg  = { hidden:{}, show:{transition:{staggerChildren:.09}} }
 export default function GreenHydrogen() {
   const { t, lang } = useLang()
-  useSEO({ lang, pageKey:'hydrogen', title:t.seo.hydrogen.title, description:t.seo.hydrogen.description, jsonLd:[organizationSchema(lang)] })
+  const schema = useSchema()
+  useSEO({ lang, pageKey:'hydrogen', title:t.seo.hydrogen.title, description:t.seo.hydrogen.description, jsonLd:[schema.organization()] })
   const chain=[{Icon:Zap,l:'Production',tx:'Solar & wind-powered electrolysis in Morocco',c:'#00C2E0'},{Icon:Battery,l:'Storage',tx:'Liquid hydrogen & ammonia carriers',c:'#8B5CF6'},{Icon:Ship,l:'Transport',tx:'Pipeline or shipping to European ports',c:'#3B82F6'},{Icon:Factory,l:'End Use',tx:'Industrial decarbonization in Netherlands & EU',c:'#22C55E'}]
   return (
     <Layout>

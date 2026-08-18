@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
-import { organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -11,8 +11,8 @@ import { Globe, ExternalLink } from 'lucide-react'
 const fUp={hidden:{opacity:0,y:24},show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}}}
 const stg={hidden:{},show:{transition:{staggerChildren:.08}}}
 export default function Partners() {
-  const {t,lang,path}=useLang(); const {partners}=useData()
-  useSEO({lang,pageKey:'partners',title:t.seo.partners.title,description:t.seo.partners.description,jsonLd:[organizationSchema(lang)]})
+  const {t,lang,path}=useLang(); const schema = useSchema(); const {partners}=useData()
+  useSEO({lang,pageKey:'partners',title:t.seo.partners.title,description:t.seo.partners.description,jsonLd:[schema.organization()]})
   const active=partners.filter(p=>p.active)
   return (
     <Layout>

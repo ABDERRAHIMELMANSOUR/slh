@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
-import { organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -35,8 +35,9 @@ function Portrait({ src, name, alt }) {
 
 export default function About() {
   const { t, lang } = useLang()
+  const schema = useSchema()
   const { settings } = useData()
-  useSEO({ lang, pageKey:'about', title:t.seo.about.title, description:t.seo.about.description, jsonLd:[organizationSchema(lang)] })
+  useSEO({ lang, pageKey:'about', title:t.seo.about.title, description:t.seo.about.description, jsonLd:[schema.organization()] })
   return (
     <Layout>
       <PageHero badge={t.about.badge} title={t.about.title} subtitle={t.about.p1}/>

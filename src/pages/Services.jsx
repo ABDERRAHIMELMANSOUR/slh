@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LangContext'
 import useSEO from '../hooks/useSEO'
-import { organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { HomeContactCTA } from '../components/home/HomeSections'
@@ -11,7 +11,8 @@ const fUp = { hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:
 const stg  = { hidden:{}, show:{transition:{staggerChildren:.08}} }
 export default function Services() {
   const { t, lang } = useLang()
-  useSEO({ lang, pageKey:'services', title:t.seo.services.title, description:t.seo.services.description, jsonLd:[organizationSchema(lang)] })
+  const schema = useSchema()
+  useSEO({ lang, pageKey:'services', title:t.seo.services.title, description:t.seo.services.description, jsonLd:[schema.organization()] })
   const svcs = [
     {Icon:Zap,k:'s1',c:'#00C2E0'},{Icon:Leaf,k:'s2',c:'#22C55E'},{Icon:Globe,k:'s3',c:'#3B82F6'},
     {Icon:TrendingUp,k:'s4',c:'#8B5CF6'},{Icon:Users,k:'s5',c:'#F59E0B'},{Icon:BarChart3,k:'s6',c:'#EF4444'},

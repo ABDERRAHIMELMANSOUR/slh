@@ -6,16 +6,17 @@ import Hero from '../components/home/Hero'
    is featured on the About page only. */
 import { StatsStrip, HomeServices, HomeTechnical, HomeHydrogenBanner, HomeContactCTA } from '../components/home/HomeSections'
 import HomeProjects, { HomeNews, HomePartners } from '../components/home/HomeProjects'
-import { organizationSchema, websiteSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 
 export default function Home() {
   const { t, lang } = useLang()
+  const schema = useSchema()
   useSEO({
     lang,
     pageKey: 'home',
     title: t.seo.home.title,
     description: t.seo.home.description,
-    jsonLd: [organizationSchema(lang), websiteSchema(lang)],
+    jsonLd: [schema.organization(), schema.website()],
   })
   return (
     <Layout>

@@ -4,16 +4,16 @@ import { motion } from 'framer-motion'
 import { useLang } from '../context/LangContext'
 import { useData } from '../context/DataContext'
 import useSEO from '../hooks/useSEO'
-import { organizationSchema } from '../lib/schema'
+import useSchema from '../hooks/useSchema'
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/ui/PageHero'
 import { ArrowRight, Search, Globe, Clock, User } from 'lucide-react'
 const fUp={hidden:{opacity:0,y:24},show:{opacity:1,y:0,transition:{duration:.65,ease:[.16,1,.3,1]}}}
 const stg={hidden:{},show:{transition:{staggerChildren:.09}}}
 export default function Blog() {
-  const {t,lang,path}=useLang(); const {blog}=useData()
+  const {t,lang,path}=useLang(); const schema = useSchema(); const {blog}=useData()
   const [q,setQ]=useState(''); const [cat,setCat]=useState('all')
-  useSEO({lang,pageKey:'blog',title:t.seo.blog.title,description:t.seo.blog.description,jsonLd:[organizationSchema(lang)]})
+  useSEO({lang,pageKey:'blog',title:t.seo.blog.title,description:t.seo.blog.description,jsonLd:[schema.organization()]})
   const pub=blog.filter(p=>p.published)
   const cats=['all',...new Set(pub.map(p=>p.category).filter(Boolean))]
   const fil=pub.filter(p=>{const mc=cat==='all'||p.category===cat;const ms=!q||p.title.toLowerCase().includes(q.toLowerCase())||p.description.toLowerCase().includes(q.toLowerCase());return mc&&ms})

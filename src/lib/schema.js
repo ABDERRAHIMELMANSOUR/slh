@@ -4,6 +4,15 @@
  * Kept in one place so the Organization / LocalBusiness identity is byte-identical on
  * every page and in both languages — inconsistent `@id` values are the usual reason
  * rich results fail to consolidate.
+ *
+ * CONTACT DETAILS ARE INJECTED, NOT IMPORTED
+ * ------------------------------------------
+ * Phone and email are editable at runtime through the admin panel, so they must come
+ * from the settings store rather than from the static config — otherwise the page
+ * would show one number while the structured data advertised another, which is exactly
+ * the mismatch Google penalises. Callers should use the `useSchema` hook, which binds
+ * the live settings for them; the COMPANY defaults below are only a safety net for a
+ * caller that has no settings available.
  */
 import { AREA_SERVED, COMPANY, SITE_URL } from '../config/site'
 import { urlFor } from '../i18n/routes'
@@ -13,7 +22,18 @@ const SITE_ID = `${SITE_URL}/#website`
 
 const areaServed = AREA_SERVED.map((name) => ({ '@type': 'Country', name }))
 
-export function organizationSchema(lang = 'nl') {
+/** Normalise whatever the caller passed into a complete contact pair. */
+const resolveContact = (contact) => ({
+  phone: contact?.phone || COMPANY.phone,
+  email: contact?.email || COMPANY.email,
+})
+
+/**
+ * @param {string} lang
+ * @param {{phone?:string,email?:string}} [contact] Live values from the settings store.
+ */
+export function organizationSchema(lang = 'nl', contact) {
+  const { phone, email } = resolveContact(contact)
   return {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'LocalBusiness'],
@@ -23,8 +43,8 @@ export function organizationSchema(lang = 'nl') {
     url: urlFor(lang, 'home'),
     logo: COMPANY.logo,
     image: COMPANY.logo,
-    email: COMPANY.email,
-    telephone: COMPANY.phone,
+    email,
+    telephone: phone,
     address: {
       '@type': 'PostalAddress',
       addressCountry: COMPANY.countryCode,
@@ -35,8 +55,8 @@ export function organizationSchema(lang = 'nl') {
     contactPoint: [{
       '@type': 'ContactPoint',
       contactType: 'sales',
-      email: COMPANY.email,
-      telephone: COMPANY.phone,
+      email,
+      telephone: phone,
       areaServed: AREA_SERVED,
       availableLanguage: ['nl', 'en'],
     }],
@@ -63,8 +83,10 @@ export function websiteSchema(lang = 'nl') {
  * @param {string}   options.serviceType     Primary keyword for the service.
  * @param {string}   options.url             Canonical URL of the service page.
  * @param {string[]} [options.offers]        Individual specialisations offered.
+ * @param {{phone?:string,email?:string}} [options.contact] Live values from the settings store.
  */
-export function serviceSchema({ lang = 'nl', name, description, serviceType, url, offers = [] }) {
+export function serviceSchema({ lang = 'nl', name, description, serviceType, url, offers = [], contact }) {
+  const { phone, email } = resolveContact(contact)
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -78,15 +100,15 @@ export function serviceSchema({ lang = 'nl', name, description, serviceType, url
       '@type': 'Organization',
       '@id': ORG_ID,
       name: COMPANY.name,
-      email: COMPANY.email,
-      telephone: COMPANY.phone,
+      email,
+      telephone: phone,
       url: urlFor(lang, 'home'),
     },
     areaServed,
     availableChannel: {
       '@type': 'ServiceChannel',
       serviceUrl: urlFor(lang, 'contact'),
-      servicePhone: COMPANY.phone,
+      servicePhone: phone,
       availableLanguage: ['nl', 'en'],
     },
     hasOfferCatalog: offers.length ? {
