@@ -20,6 +20,7 @@ import {
   ROUTES,
   urlFor,
 } from '../src/i18n/routes.js'
+import { SITE_URL } from '../src/config/site.js'
 
 /**
  * Crawl metadata per page key. Every key in the app's route map must appear here —
@@ -49,6 +50,29 @@ const orphaned = Object.keys(META).filter((k) => !PAGE_KEYS.includes(k))
 if (orphaned.length) {
   console.error(`META lists route(s) the app no longer has: ${orphaned.join(', ')}`)
   process.exit(1)
+}
+
+
+/**
+ * robots.txt advertises the sitemap by absolute URL, and Search Console rejects a
+ * sitemap that sits outside the verified property ("Invalid sitemap address"). If the
+ * canonical host in src/config/site.js and the Sitemap: line ever disagree, that is
+ * the mismatch — so fail on it rather than shipping two different hosts.
+ */
+function checkRobotsHost(robotsPath) {
+  let robots
+  try { robots = readFileSync(robotsPath, 'utf8') } catch { return ['public/robots.txt is missing'] }
+
+  const declared = robots.match(/^\s*Sitemap:\s*(\S+)\s*$/mi)?.[1]
+  if (!declared) return ['public/robots.txt has no "Sitemap:" line']
+
+  const expected = `${SITE_URL}/sitemap.xml`
+  if (declared !== expected) {
+    return [`robots.txt advertises ${declared} but SITE_URL is ${SITE_URL}`,
+            `  expected: Sitemap: ${expected}`,
+            `  Google rejects a sitemap outside the verified property — keep the host identical.`]
+  }
+  return []
 }
 
 /** Order pages by descending priority so the important URLs lead the file. */
@@ -110,7 +134,13 @@ if (process.argv.includes('--check')) {
     console.error('\nRun: npm run sitemap')
     process.exit(1)
   }
+  const robotsProblems = checkRobotsHost(resolve(dirname(fileURLToPath(import.meta.url)), '../public/robots.txt'))
+  if (robotsProblems.length) {
+    console.error(robotsProblems.join('\n'))
+    process.exit(1)
+  }
   console.log(`sitemap.xml is current: ${listed.length}/${expectedCount} URLs match the route map`)
+  console.log(`robots.txt Sitemap: line matches SITE_URL (${SITE_URL})`)
   process.exit(0)
 }
 
@@ -128,3 +158,6 @@ try {
 
 writeFileSync(out, buildXml(lastmod))
 console.log(`sitemap.xml written: ${expectedCount} URLs (${LOCALES.join(' + ')}), lastmod ${lastmod}`)
+
+const robotsProblems = checkRobotsHost(resolve(dirname(fileURLToPath(import.meta.url)), '../public/robots.txt'))
+if (robotsProblems.length) console.warn(`\nWARNING: ${robotsProblems.join('\n')}`)

@@ -1,4 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
   "redirects": [
     { "source": "/", "destination": "/nl", "permanent": true },
 
@@ -12,7 +14,15 @@
     { "source": "/partners",   "destination": "/nl/partners",         "permanent": true },
     { "source": "/contact",    "destination": "/nl/contact",          "permanent": true }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+
+  "rewrites": [
+    {
+      "_comment": "SPA fallback for app routes only. The negative lookahead excludes any path containing a dot, so real files in the build root — sitemap.xml, robots.txt, favicon.svg, slh-logo.png, /assets/* — are served straight from the filesystem as themselves. Vercel already checks the filesystem before applying rewrites; stating it here means /sitemap.xml cannot be swallowed and returned as index.html even if that ordering changes or this config is reused on another host. Every app route is dot-free (/nl, /en/technical-engineering-services, /nl/nieuws/<slug>), so none are affected.",
+      "source": "/((?!.*\\.).*)",
+      "destination": "/index.html"
+    }
+  ],
+
   "headers": [
     { "source": "/sitemap.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }] },
     { "source": "/robots.txt",  "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
