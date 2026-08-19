@@ -1,54 +1,83 @@
 /**
- * Regenerates public/sitemap.xml from the single route map in src/i18n/routes.js,
- * so the sitemap can never drift from the routes the app actually serves.
- * Run: node scripts/generate-sitemap.mjs
+ * Regenerates public/sitemap.xml.
+ *
+ * The route map is IMPORTED from src/i18n/routes.js — the same module the router,
+ * the language switcher and the hreflang tags use — so the sitemap cannot list a URL
+ * the app does not serve, or miss one it does. Only sitemap-specific metadata
+ * (priority, changefreq) lives here.
+ *
+ *   node scripts/generate-sitemap.mjs           regenerate the file
+ *   node scripts/generate-sitemap.mjs --check   verify it is current; non-zero on drift
  */
-import { writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-const SITE_URL = 'https://slhservice.nl'
-const LOCALES = ['nl', 'en']
-const DEFAULT_LOCALE = 'nl'
+import {
+  DEFAULT_LOCALE,
+  LOCALES,
+  PAGE_KEYS,
+  ROUTES,
+  urlFor,
+} from '../src/i18n/routes.js'
 
-const ROUTES = {
-  home:      { nl: '',                      en: '',                                  priority: '1.0', changefreq: 'weekly' },
-  technical: { nl: 'technische-ontzorging', en: 'technical-engineering-services',    priority: '1.0', changefreq: 'weekly' },
-  services:  { nl: 'diensten',              en: 'services',                          priority: '0.9', changefreq: 'monthly' },
-  hydrogen:  { nl: 'groene-waterstof',      en: 'green-hydrogen',                    priority: '0.9', changefreq: 'monthly' },
-  about:     { nl: 'over-ons',              en: 'about',                             priority: '0.8', changefreq: 'monthly' },
-  projects:  { nl: 'projecten',             en: 'projects',                          priority: '0.8', changefreq: 'weekly' },
-  contact:   { nl: 'contact',               en: 'contact',                           priority: '0.8', changefreq: 'monthly' },
-  events:    { nl: 'evenementen',           en: 'events',                            priority: '0.7', changefreq: 'weekly' },
-  blog:      { nl: 'nieuws',                en: 'news',                              priority: '0.7', changefreq: 'weekly' },
-  partners:  { nl: 'partners',              en: 'partners',                          priority: '0.6', changefreq: 'monthly' },
+/**
+ * Crawl metadata per page key. Every key in the app's route map must appear here —
+ * the guard below turns "someone added a page and forgot the sitemap" into a loud
+ * failure instead of a silently missing URL.
+ */
+const META = {
+  home:      { priority: '1.0', changefreq: 'weekly' },
+  technical: { priority: '1.0', changefreq: 'weekly' },
+  services:  { priority: '0.9', changefreq: 'monthly' },
+  hydrogen:  { priority: '0.9', changefreq: 'monthly' },
+  about:     { priority: '0.8', changefreq: 'monthly' },
+  projects:  { priority: '0.8', changefreq: 'weekly' },
+  contact:   { priority: '0.8', changefreq: 'monthly' },
+  events:    { priority: '0.7', changefreq: 'weekly' },
+  blog:      { priority: '0.7', changefreq: 'weekly' },
+  partners:  { priority: '0.6', changefreq: 'monthly' },
 }
 
-const url = (locale, slug) => `${SITE_URL}/${locale}${slug ? `/${slug}` : ''}`
-const lastmod = new Date().toISOString().slice(0, 10)
+const missing = PAGE_KEYS.filter((k) => !META[k])
+if (missing.length) {
+  console.error(`Route(s) with no sitemap metadata: ${missing.join(', ')}\n` +
+    `Add them to META in scripts/generate-sitemap.mjs.`)
+  process.exit(1)
+}
+const orphaned = Object.keys(META).filter((k) => !PAGE_KEYS.includes(k))
+if (orphaned.length) {
+  console.error(`META lists route(s) the app no longer has: ${orphaned.join(', ')}`)
+  process.exit(1)
+}
 
-const entries = []
-for (const [key, r] of Object.entries(ROUTES)) {
-  for (const locale of LOCALES) {
-    const alternates = [
-      ...LOCALES.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${url(l, r[l])}"/>`),
-      `    <xhtml:link rel="alternate" hreflang="x-default" href="${url(DEFAULT_LOCALE, r[DEFAULT_LOCALE])}"/>`,
-    ].join('\n')
-    entries.push(
+/** Order pages by descending priority so the important URLs lead the file. */
+const ordered = [...PAGE_KEYS].sort((a, b) => Number(META[b].priority) - Number(META[a].priority))
+
+function buildXml(lastmod) {
+  const entries = []
+  for (const key of ordered) {
+    for (const locale of LOCALES) {
+      const alternates = [
+        ...LOCALES.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${urlFor(l, key)}"/>`),
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFor(DEFAULT_LOCALE, key)}"/>`,
+      ].join('\n')
+      entries.push(
 `  <!-- ${key} (${locale}) -->
   <url>
-    <loc>${url(locale, r[locale])}</loc>
+    <loc>${urlFor(locale, key)}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>${r.changefreq}</changefreq>
-    <priority>${r.priority}</priority>
+    <changefreq>${META[key].changefreq}</changefreq>
+    <priority>${META[key].priority}</priority>
 ${alternates}
   </url>`)
+    }
   }
-}
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Generated by scripts/generate-sitemap.mjs — do not edit by hand.
+  Routes come from src/i18n/routes.js, so this file always matches what the app serves.
   Every page is listed once per language, each on its own URL, with reciprocal
   hreflang annotations so Google indexes the NL and EN variants independently.
 -->
@@ -59,7 +88,43 @@ ${entries.join('\n\n')}
 
 </urlset>
 `
+}
 
 const out = resolve(dirname(fileURLToPath(import.meta.url)), '../public/sitemap.xml')
-writeFileSync(out, xml)
-console.log(`sitemap.xml written: ${entries.length} URLs`)
+const expectedCount = ordered.length * LOCALES.length
+
+if (process.argv.includes('--check')) {
+  let current = ''
+  try { current = readFileSync(out, 'utf8') } catch {
+    console.error('public/sitemap.xml is missing. Run: npm run sitemap')
+    process.exit(1)
+  }
+  const listed = [...current.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
+  const expected = ordered.flatMap((key) => LOCALES.map((l) => urlFor(l, key)))
+  const absent = expected.filter((u) => !listed.includes(u))
+  const stale = listed.filter((u) => !expected.includes(u))
+
+  if (absent.length || stale.length) {
+    if (absent.length) console.error(`Missing from sitemap.xml:\n  ${absent.join('\n  ')}`)
+    if (stale.length) console.error(`Listed but not a real route:\n  ${stale.join('\n  ')}`)
+    console.error('\nRun: npm run sitemap')
+    process.exit(1)
+  }
+  console.log(`sitemap.xml is current: ${listed.length}/${expectedCount} URLs match the route map`)
+  process.exit(0)
+}
+
+// Preserve the existing lastmod unless the URL set changed, so routine rebuilds do not
+// tell crawlers every page changed today.
+let lastmod = new Date().toISOString().slice(0, 10)
+try {
+  const previous = readFileSync(out, 'utf8')
+  const listed = [...previous.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
+  const expected = ordered.flatMap((key) => LOCALES.map((l) => urlFor(l, key)))
+  const unchanged = listed.length === expected.length && expected.every((u) => listed.includes(u))
+  const priorDate = previous.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1]
+  if (unchanged && priorDate) lastmod = priorDate
+} catch { /* first run */ }
+
+writeFileSync(out, buildXml(lastmod))
+console.log(`sitemap.xml written: ${expectedCount} URLs (${LOCALES.join(' + ')}), lastmod ${lastmod}`)

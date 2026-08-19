@@ -9,7 +9,7 @@
  * There is no locale-less content URL: `/` and any legacy path redirect into `/nl`,
  * which is also the `x-default` target.
  */
-import { SITE_URL } from '../config/site'
+import { SITE_URL } from '../config/site.js'
 
 export const DEFAULT_LOCALE = 'nl'
 export const LOCALES = ['nl', 'en']
